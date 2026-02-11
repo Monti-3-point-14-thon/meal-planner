@@ -68,10 +68,11 @@ export async function POST(request: NextRequest) {
 
     // Create edit history entry
     const editEntry: MealEdit = {
+      id: uuidv4(),
+      user_instruction: editInstruction,
       timestamp: new Date().toISOString(),
-      instruction: editInstruction,
-      previous_macros: meal.macros,
       previous_name: meal.name,
+      previous_macros: meal.macros,
     };
 
     // Create updated meal object

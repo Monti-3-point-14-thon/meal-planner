@@ -388,26 +388,26 @@
 
 ### Critical Path Testing
 
-- [ ] **T040**: Test dietary restrictions enforcement
+- [X] **T040**: Test dietary restrictions enforcement
   - Test: Generate 10 plans with different restrictions (vegetarian, gluten-free, etc.)
   - Verify: ZERO violations (critical)
   - Manual review of ingredients
   - Dependencies: All Phase 2 tasks complete
   - Estimated: 1 hour
 
-- [ ] **T041**: Test cultural cuisine reflection
+- [X] **T041**: Test cultural cuisine reflection
   - Test: Generate 5 plans with different cuisines (Japanese, Mediterranean, Mexican, etc.)
   - Verify: Meals use appropriate ingredients
   - Dependencies: All Phase 2 tasks complete
   - Estimated: 30 min
 
-- [ ] **T042**: Test macro calculation accuracy
+- [X] **T042**: Test macro calculation accuracy
   - Test: Verify daily totals = sum of individual meals
   - Test: Multiple meal edits update totals correctly
   - Dependencies: T033
   - Estimated: 30 min
 
-- [ ] **T043**: Test error handling
+- [X] **T043**: Test error handling
   - Test: Simulate rate limit (hit Gemini 15 RPM limit)
   - Test: Invalid user input
   - Test: Network failures
@@ -417,7 +417,7 @@
 
 ### Mobile Responsiveness
 
-- [ ] **T044**: Test mobile layout
+- [X] **T044**: Test mobile layout
   - Test: Settings form, meal plan view on mobile screen sizes
   - Verify: Readable, usable, no horizontal scroll
   - Fix: Any layout issues
@@ -426,7 +426,7 @@
 
 ### Performance Optimization (if needed)
 
-- [ ] **T045**: Optimize generation speed
+- [X] **T045**: Optimize generation speed
   - If generation >30 seconds: investigate bottlenecks
   - Consider: Make Tavily async (generate plan, add sources after)
   - Dependencies: T025

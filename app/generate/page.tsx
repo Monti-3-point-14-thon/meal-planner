@@ -19,6 +19,12 @@ export default function GeneratePage() {
   }, []);
 
   const generateMealPlan = async () => {
+    const requestTimestamp = new Date().toISOString();
+    console.log('🔵 [Client] Starting meal generation', {
+      timestamp: requestTimestamp,
+      endpoint: '/api/generate-meal-plan',
+    });
+
     try {
       // Get user settings from localStorage
       const settings = getSettings();
@@ -40,16 +46,36 @@ export default function GeneratePage() {
         body: JSON.stringify({ settings }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate meal plan');
-      }
+      console.log('🔵 [Client] Response received', {
+        timestamp: new Date().toISOString(),
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        headers: {
+          contentType: response.headers.get('content-type'),
+          contentLength: response.headers.get('content-length'),
+        },
+      });
 
       const data = await response.json();
 
-      if (!data.success || !data.mealPlan) {
-        throw new Error('Invalid response from server');
+      if (!response.ok || !data.success) {
+        const errorDetails = data.error || data.details || 'Generation failed';
+        console.error('❌ [Client] Generation failed', {
+          timestamp: new Date().toISOString(),
+          status: response.status,
+          error: errorDetails,
+          details: data.details,
+          requestId: data.requestId,
+        });
+        throw new Error(errorDetails);
       }
+
+      console.log('✅ [Client] Meal plan generated', {
+        timestamp: new Date().toISOString(),
+        mealsCount: data.mealPlan.meals.length,
+        totalCalories: data.mealPlan.daily_totals.calories,
+      });
 
       // Save meal plan to localStorage
       const mealPlan: MealPlan = data.mealPlan;
@@ -58,7 +84,12 @@ export default function GeneratePage() {
       // Navigate to meal plan display page
       router.push('/meal-plan');
     } catch (err: any) {
-      console.error('Generation error:', err);
+      console.error('❌ [Client] Fetch error', {
+        timestamp: new Date().toISOString(),
+        errorMessage: err.message,
+        errorType: err.constructor.name,
+        isNetworkError: err instanceof TypeError,
+      });
       setError(err.message || 'An unexpected error occurred');
       setErrorDetails(err.stack || JSON.stringify(err, null, 2));
     }

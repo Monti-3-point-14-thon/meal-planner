@@ -162,7 +162,7 @@ export default function MealCard({ meal, onEdit, onUndo }: MealCardProps) {
                   </span>
                 </div>
                 <div className="text-xs bg-base-200 rounded p-2 mt-1">
-                  <span className="opacity-70">Last change:</span> "{lastEdit.instruction}"
+                  <span className="opacity-70">Last change:</span> "{lastEdit.user_instruction}"
                 </div>
               </div>
               {onUndo && (

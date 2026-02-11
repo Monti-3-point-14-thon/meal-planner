@@ -51,12 +51,18 @@ export interface Macros {
   calories: number;
   protein: number; // grams
   carbs: number; // grams
-  fats: number; // grams
+  fat: number; // grams
+  fiber: number; // grams
 }
 
 export interface Ingredient {
   name: string;
-  quantity: string; // e.g., "150g" or "1 cup"
+  amount?: string; // e.g., "150g" or "1 cup" (from AI)
+  quantity?: string; // deprecated, use amount
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
   notes?: string; // optional notes
 }
 
@@ -64,6 +70,8 @@ export interface MealEdit {
   id: string; // uuid
   user_instruction: string; // e.g., "Make it vegetarian"
   timestamp: string; // ISO timestamp
+  previous_name?: string; // for undo functionality
+  previous_macros?: Macros; // for undo functionality
 }
 
 export interface Meal {
@@ -71,13 +79,15 @@ export interface Meal {
   type: MealType;
   name: string; // e.g., "Grilled Salmon with Quinoa"
   ingredients: Ingredient[];
-  preparation: string; // brief instructions
+  preparation?: string; // brief instructions (deprecated, use instructions instead)
+  instructions?: string; // cooking instructions
   macros: Macros;
   nutritional_reasoning: string; // why this meal serves user's goal
   scientific_sources?: string[]; // Tavily-validated sources (optional)
+  prep_time_minutes?: number; // preparation time in minutes
   edit_history: MealEdit[]; // track refinements
-  created_at: string; // ISO timestamp
-  updated_at: string; // ISO timestamp
+  created_at?: string; // ISO timestamp
+  updated_at?: string; // ISO timestamp
 }
 
 export interface MealPlan {

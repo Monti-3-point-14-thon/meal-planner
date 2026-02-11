@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
 import { UserSettings, MealPlan, Meal } from '@/lib/types';
 import { buildMealPlanPrompt } from '@/lib/ai/prompts';
 import { callModel, getDefaultModel } from '@/lib/ai/openrouter';
@@ -12,6 +13,8 @@ import {
 } from '@/lib/ai/tavily';
 
 export async function POST(request: NextRequest) {
+  let requestId = 'unknown'; // Declare at function scope for error handler
+
   try {
     // Parse request body
     const body = await request.json();
@@ -24,13 +27,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate request ID for tracking
+    requestId = crypto.randomUUID();
+    console.log('🔵 [MealGen] Request received', JSON.stringify({
+      requestId,
+      timestamp: new Date().toISOString(),
+      settingsId: settings.id,
+      goal: settings.primary_goal,
+      biometrics: {
+        age: settings.biometrics.age,
+        sex: settings.biometrics.sex,
+        weight: settings.biometrics.weight,
+        height: settings.biometrics.height,
+      },
+      culturalCuisine: settings.cultural_context.cuisine,
+      restrictionsCount: settings.dietary_restrictions.length,
+    }, null, 2));
+
     // Build AI prompts
     const { system, user } = buildMealPlanPrompt(settings);
 
+    console.log('🔵 [MealGen] Prompts built', JSON.stringify({
+      requestId,
+      timestamp: new Date().toISOString(),
+      systemPromptLength: system.length,
+      userPromptLength: user.length,
+      systemPromptPreview: system.substring(0, 200) + '...',
+      userPromptPreview: user.substring(0, 200) + '...',
+    }, null, 2));
+
     // Call AI model
-    console.log('Calling AI model for meal plan generation...');
+    const modelToUse = getDefaultModel();
+    console.log('🔵 [MealGen] Calling AI model', JSON.stringify({
+      requestId,
+      timestamp: new Date().toISOString(),
+      model: modelToUse,
+      temperature: 0.7,
+      max_tokens: 4000,
+    }, null, 2));
+
     const response = await callModel(
-      getDefaultModel(),
+      modelToUse,
       [
         { role: 'system', content: system },
         { role: 'user', content: user },
@@ -40,6 +77,14 @@ export async function POST(request: NextRequest) {
         max_tokens: 4000,
       }
     );
+
+    console.log('✅ [MealGen] AI response received', JSON.stringify({
+      requestId,
+      timestamp: new Date().toISOString(),
+      responseSuccess: response.success,
+      contentLength: response.content?.length || 0,
+      contentPreview: response.content?.substring(0, 200) + '...',
+    }, null, 2));
 
     if (!response.success || !response.content) {
       throw new Error(response.error || 'AI model returned no content');
@@ -123,13 +168,21 @@ export async function POST(request: NextRequest) {
       mealPlan,
     });
   } catch (error: any) {
-    console.error('Meal plan generation error:', error);
+    console.error('❌ [MealGen] Generation failed', JSON.stringify({
+      requestId,
+      timestamp: new Date().toISOString(),
+      errorMessage: error?.message,
+      errorStack: error?.stack?.split('\n').slice(0, 3), // First 3 lines
+      errorType: error?.constructor?.name,
+    }, null, 2));
 
-    // Return user-friendly error
+    // Return user-friendly error with details
     return NextResponse.json(
       {
+        success: false,
         error: 'Failed to generate meal plan',
         details: error.message || 'Unknown error',
+        requestId,
       },
       { status: 500 }
     );

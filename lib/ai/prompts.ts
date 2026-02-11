@@ -211,14 +211,19 @@ function calculateBMR(biometrics: {
   weight: number;
   height: number;
   age: number;
-  sex: 'male' | 'female';
+  sex: 'male' | 'female' | 'other';
 }): number {
   const { weight, height, age, sex } = biometrics;
 
   if (sex === 'male') {
     return 10 * weight + 6.25 * height - 5 * age + 5;
-  } else {
+  } else if (sex === 'female') {
     return 10 * weight + 6.25 * height - 5 * age - 161;
+  } else {
+    // For 'other', use average of male and female formulas
+    const maleBMR = 10 * weight + 6.25 * height - 5 * age + 5;
+    const femaleBMR = 10 * weight + 6.25 * height - 5 * age - 161;
+    return (maleBMR + femaleBMR) / 2;
   }
 }
 
@@ -228,7 +233,7 @@ function calculateBMR(biometrics: {
 function adjustCaloriesForGoal(
   bmr: number,
   goal: string,
-  sex: 'male' | 'female'
+  sex: 'male' | 'female' | 'other'
 ): number {
   // Assume moderate activity level (BMR * 1.5)
   const tdee = bmr * 1.5;

@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Create snack meal object
     const snack: Meal = {
       id: uuidv4(),
-      type: 'snack',
+      type: `snack_${preferences.timing}` as any,
       name: aiData.name,
       ingredients: aiData.ingredients || [],
       macros: aiData.macros || {
