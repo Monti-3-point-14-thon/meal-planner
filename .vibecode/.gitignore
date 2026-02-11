@@ -1,0 +1,14 @@
+# Vibecode .gitignore
+
+# Session files (auto-generated, may contain sensitive context)
+session/resume-context.md
+session/active-feature.md
+
+# Temp files
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+

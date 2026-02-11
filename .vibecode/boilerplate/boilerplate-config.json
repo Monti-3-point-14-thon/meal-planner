@@ -1,0 +1,34 @@
+{
+  "enabled": true,
+  "type": "ship-fast",
+  "version": "latest",
+  "path": "/Users/adrienmuller/Documents/GitHub/ship-fast-main",
+
+  "available-boilerplates": {
+    "ship-fast": {
+      "name": "ShipFast",
+      "description": "Next.js SaaS boilerplate with auth, payments, DB",
+      "tech-stack": ["Next.js 15", "React 19", "MongoDB", "Stripe", "NextAuth", "Tailwind", "DaisyUI"],
+      "path": "../ship-fast",
+      "features": ["authentication", "payments", "database", "email", "ui-components"]
+    },
+    "custom": {
+      "name": "Custom Boilerplate",
+      "description": "User-provided boilerplate",
+      "path": null,
+      "features": []
+    },
+    "none": {
+      "name": "No Boilerplate",
+      "description": "Start from scratch",
+      "path": null,
+      "features": []
+    }
+  },
+
+  "instructions": {
+    "how-to-enable": "Run: /vibecode.boilerplate enable <type>",
+    "how-to-switch": "Run: /vibecode.boilerplate switch <type>",
+    "how-to-disable": "Run: /vibecode.boilerplate disable"
+  }
+}

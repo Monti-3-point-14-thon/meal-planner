@@ -1,0 +1,198 @@
+{
+  "version": "0.1.0",
+  "mode": "solo-founder-mvp",
+  "technical-cofounder-mode": true,
+  "scope-forcing": "aggressive",
+
+  "skills": {
+    "builder": {
+      "zero-to-launch": {
+        "enabled": true,
+        "weight": "critical",
+        "description": "Idea → Prototype playbook (OpenAI, Figma, Airbnb frameworks)"
+      },
+      "strategic-build": {
+        "enabled": true,
+        "weight": "critical",
+        "description": "LNO framework - Leverage vs Neutral vs Overhead work"
+      },
+      "ship-decisions": {
+        "enabled": true,
+        "weight": "critical",
+        "description": "When to ship vs iterate more"
+      },
+      "ai-product-patterns": {
+        "enabled": true,
+        "weight": "high",
+        "description": "AI-first product development patterns"
+      },
+      "design-first-dev": {
+        "enabled": true,
+        "weight": "medium",
+        "description": "Craft quality standards"
+      },
+      "quality-speed": {
+        "enabled": true,
+        "weight": "medium",
+        "description": "Balance craft vs velocity"
+      },
+      "jtbd-building": {
+        "enabled": false,
+        "weight": "low",
+        "description": "Jobs-to-be-Done framework"
+      },
+      "continuous-discovery": {
+        "enabled": false,
+        "weight": "low",
+        "description": "Weekly customer contact"
+      },
+      "growth-embedded": {
+        "enabled": false,
+        "weight": "low",
+        "description": "Growth loops and viral mechanics"
+      },
+      "exp-driven-dev": {
+        "enabled": false,
+        "weight": "low",
+        "description": "A/B testing and experimentation"
+      },
+      "ai-startup-building": {
+        "enabled": false,
+        "weight": "low",
+        "description": "AI startup playbook"
+      }
+    },
+    "strategist": {
+      "decision-frameworks": {
+        "enabled": true,
+        "weight": "critical",
+        "description": "Structured decision making"
+      },
+      "prioritization-craft": {
+        "enabled": true,
+        "weight": "high",
+        "description": "Feature prioritization (RICE, etc.)"
+      },
+      "strategy-frameworks": {
+        "enabled": false,
+        "weight": "low",
+        "description": "Product strategy frameworks"
+      },
+      "okr-frameworks": {
+        "enabled": false,
+        "weight": "low",
+        "description": "Goal setting"
+      }
+    },
+    "communicator": {
+      "strategic-storytelling": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "positioning-craft": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "exec-comms": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "confident-speaking": {
+        "enabled": false,
+        "weight": "low"
+      }
+    },
+    "navigator": {
+      "influence-craft": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "stakeholder-craft": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "workplace-navigation": {
+        "enabled": false,
+        "weight": "low"
+      }
+    },
+    "leader": {
+      "culture-craft": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "career-growth": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "strategic-pm": {
+        "enabled": false,
+        "weight": "low"
+      }
+    },
+    "measurement": {
+      "metrics-frameworks": {
+        "enabled": false,
+        "weight": "low"
+      },
+      "user-feedback-system": {
+        "enabled": false,
+        "weight": "low"
+      }
+    },
+    "launch": {
+      "launch-execution": {
+        "enabled": false,
+        "weight": "low"
+      }
+    }
+  },
+
+  "custom-prompts": {
+    "technical-implications": {
+      "behavior": "automatic",
+      "flow": [
+        "1. Identify technical implication",
+        "2. Ask for business context (users, budget, timeline, constraints)",
+        "3. Calculate based on user's numbers",
+        "4. Present options with clear trade-offs",
+        "5. Make recommendation with rationale",
+        "6. Offer to log pattern in trade-offs memory"
+      ],
+      "template": "Before explaining technical implications, ask: How many users? Budget? Timeline (MVP or core feature)? Any constraints?"
+    },
+    "scope-forcing": {
+      "behavior": "aggressive",
+      "questions": [
+        "What's the ONE core job this feature must do?",
+        "Can we ship a working version in 1 week?",
+        "What's the absolute minimum that would be valuable?"
+      ],
+      "challenge-threshold": "If estimated time > 1 week, challenge scope"
+    },
+    "trade-off-decisions": {
+      "categories": ["prototype-fast", "build-robust"],
+      "always-explain": [
+        "Time cost (days to build)",
+        "Complexity level (simple/medium/complex)",
+        "Future migration path",
+        "When to consider upgrading"
+      ]
+    }
+  },
+
+  "presets": {
+    "solo-founder-mvp": {
+      "description": "Solo founder building MVPs - focus on speed and validation",
+      "recommended-skills": ["zero-to-launch", "strategic-build", "ship-decisions", "decision-frameworks", "prioritization-craft"]
+    },
+    "team-scale-up": {
+      "description": "Growing team, scaling product - add coordination skills",
+      "recommended-skills": ["strategic-build", "continuous-discovery", "metrics-frameworks", "stakeholder-craft"]
+    },
+    "enterprise": {
+      "description": "Enterprise product with compliance needs",
+      "recommended-skills": ["strategy-frameworks", "exec-comms", "okr-frameworks", "quality-speed"]
+    }
+  }
+}

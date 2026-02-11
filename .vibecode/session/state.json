@@ -1,0 +1,25 @@
+{
+  "project": {
+    "name": "meal-planner_v0",
+    "initialized": "2026-02-11T08:20:42Z",
+    "last-active": "2026-02-11T10:30:00Z",
+    "version": "0.1.0"
+  },
+  "current": {
+    "feature": "001-meal-plan-generator",
+    "phase": "implement",
+    "branch": "001-meal-plan-generator",
+    "last-command": "implement"
+  },
+  "history": {
+    "features-completed": [],
+    "total-features": 1,
+    "last-milestone": null
+  },
+  "flags": {
+    "has-constitution": true,
+    "has-boilerplate": true,
+    "pm-skills-configured": true,
+    "design-system-initialized": false
+  }
+}
