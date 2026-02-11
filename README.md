@@ -1,6 +1,6 @@
-# Abe: Technical Co-Founder for Vibecoding
+# AI-Powered Personalized Meal Planner
 
-An AI-driven framework that acts as your **technical co-founder**, combining structured development (Spec-Kit), product management expertise (PM Skills), and long-term memory to enable solo founders to build production-ready products through natural language.
+A science-backed, personalized meal planning application that uses AI to generate customized nutrition plans based on your health goals, biometrics, cultural preferences, and dietary restrictions.
 
 ## What is Abe?
 
