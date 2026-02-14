@@ -12,12 +12,12 @@
 
 ### Setup Tasks
 
-- [ ] **T001**: Create design-system directory
+- [X] **T001**: Create design-system directory
   - Files: `app/components/design-system/` (new directory)
   - Dependencies: None
   - Estimated: 5 minutes
 
-- [ ] **T002**: Create design system tokens documentation
+- [X] **T002**: Create design system tokens documentation
   - Files: `.vibecode/memory/design-system/tokens.md` (new)
   - Content: Colors (primary-50, primary-100, primary-900), spacing (4px, 8px, 12px, 16px, 24px), pills pattern specs, multi-select specs
   - Dependencies: T001
@@ -25,7 +25,7 @@
 
 ### Core Implementation
 
-- [ ] **T003**: Create Pill component
+- [X] **T003**: Create Pill component
   - Files: `app/components/design-system/Pill.tsx` (new)
   - Props: `{ text: string, icon?: ReactNode, onRemove: () => void, className?: string }`
   - Styling: Uses DaisyUI + Tailwind (`bg-primary bg-opacity-10`, `text-primary`, `rounded-full`, `px-3 py-1.5`)
@@ -33,7 +33,7 @@
   - Dependencies: T002
   - Estimated: 2 hours
 
-- [ ] **T004**: Create FlagIcon component
+- [X] **T004**: Create FlagIcon component
   - Files: `app/components/design-system/FlagIcon.tsx` (new)
   - Props: `{ cuisine: string }`
   - Logic: Map cuisine name to emoji flag(s) - Italian→🇮🇹, Mediterranean→🇬🇷🇮🇹🇹🇷, etc.
@@ -42,7 +42,7 @@
   - Estimated: 1 hour
   - [P] Can run in parallel with T003
 
-- [ ] **T005**: Create MultiSelectDropdown component
+- [X] **T005**: Create MultiSelectDropdown component
   - Files: `app/components/design-system/MultiSelectDropdown.tsx` (new)
   - Props: `{ options: {value, label}[], selected: string[], onChange: (selected) => void, placeholder?: string, error?: string }`
   - Behavior: Click to toggle, checkboxes, click-outside to close, Escape key to close
@@ -53,7 +53,7 @@
 
 ### Testing
 
-- [ ] **T006**: Test Phase 1 components
+- [X] **T006**: Test Phase 1 components
   - Test Pill: renders with/without icon, (x) button works, keyboard navigation works, hover states
   - Test FlagIcon: maps all 15-20 cuisines correctly, shows fallback for unmapped
   - Test MultiSelectDropdown: opens/closes, checkboxes select/deselect, shows "N selected", keyboard navigation
@@ -69,7 +69,7 @@
 
 ### Data Model Updates
 
-- [ ] **T007**: Update CulturalContext type in types.ts
+- [X] **T007**: Update CulturalContext type in types.ts
   - Files: `lib/types.ts`
   - Change: `cuisine: string` → `cuisines: string[]`
   - Dependencies: Phase 1 complete
@@ -77,13 +77,13 @@
 
 ### Component Updates
 
-- [ ] **T008**: Add cuisine-to-flag mapping in FlagIcon
+- [X] **T008**: Add cuisine-to-flag mapping in FlagIcon
   - Files: `app/components/design-system/FlagIcon.tsx`
   - Add mapping for 15-20 cuisines: Italian🇮🇹, Mexican🇲🇽, Japanese🇯🇵, Chinese🇨🇳, Indian🇮🇳, Mediterranean🇬🇷🇮🇹🇹🇷, American🇺🇸, French🇫🇷, Thai🇹🇭, Vietnamese🇻🇳, Korean🇰🇷, Middle Eastern🇱🇧🇸🇦🇦🇪, Caribbean🇯🇲🇨🇺🇵🇷, African🌍, Latin American🇲🇽🇧🇷🇦🇷, Other🌍
   - Dependencies: T007
   - Estimated: 30 minutes
 
-- [ ] **T009**: Refactor CultureSelector to use MultiSelectDropdown
+- [X] **T009**: Refactor CultureSelector to use MultiSelectDropdown
   - Files: `app/components/CultureSelector.tsx`
   - Changes:
     1. Replace `<select>` with `<MultiSelectDropdown>`
@@ -94,7 +94,7 @@
   - Dependencies: T008
   - Estimated: 3 hours
 
-- [ ] **T010**: Add backwards-compatible data migration in CultureSelector
+- [X] **T010**: Add backwards-compatible data migration in CultureSelector
   - Files: `app/components/CultureSelector.tsx`
   - Logic: `if (typeof value.cuisine === 'string') { value.cuisines = [value.cuisine] }`
   - Display warning if old format detected
@@ -103,7 +103,7 @@
 
 ### Form Integration
 
-- [ ] **T011**: Update SettingsForm validation for cuisines
+- [X] **T011**: Update SettingsForm validation for cuisines
   - Files: `app/components/SettingsForm.tsx`
   - Validation: `cuisines.length >= 1` (at least one cuisine required)
   - Error message: "Please select at least one cuisine preference"
@@ -111,7 +111,7 @@
   - Dependencies: T010
   - Estimated: 1 hour
 
-- [ ] **T012**: Update localStorage migration in storage.ts
+- [X] **T012**: Update localStorage migration in storage.ts
   - Files: `lib/storage.ts`
   - Add migration in `getSettings()`: convert old `cuisine` string to `cuisines` array
   - Logic: Check if `cuisine` exists, convert to `[cuisine]`, delete old field
@@ -121,7 +121,7 @@
 
 ### AI Integration
 
-- [ ] **T013**: Update AI prompts to use cuisines array
+- [X] **T013**: Update AI prompts to use cuisines array
   - Files: `lib/ai/prompts.ts`
   - Update `buildMealPlanPrompt()`: change from single cuisine to cuisines list
   - Prompt text: "Cultural Preference: Italian, Mexican, Japanese cuisine" (join array)
@@ -132,7 +132,7 @@
 
 ### Testing
 
-- [ ] **T014**: Test Phase 2 multi-select cuisines
+- [X] **T014**: Test Phase 2 multi-select cuisines
   - Test dropdown: opens, shows all 15-20 options, checkboxes work
   - Test pills: appear with correct flags, wrap to multiple rows if >5 selected
   - Test removal: clicking (x) removes pill and unchecks dropdown
@@ -151,7 +151,7 @@
 
 ### Data Model Updates
 
-- [ ] **T015**: Add FoodPreferences type and update UserSettings
+- [X] **T015**: Add FoodPreferences type and update UserSettings
   - Files: `lib/types.ts`
   - Add: `interface FoodPreferences { dislikes: string[] }`
   - Update UserSettings: add `food_preferences: FoodPreferences`
@@ -161,7 +161,7 @@
 
 ### New Component
 
-- [ ] **T016**: Create PreferencesInput component
+- [X] **T016**: Create PreferencesInput component
   - Files: `app/components/PreferencesInput.tsx` (new)
   - UI: Text input + "Add" button + Enter key handler
   - Display: Preferences as Pill[] (no icons)
@@ -173,7 +173,7 @@
 
 ### Component Updates
 
-- [ ] **T017**: Refactor RestrictionsInput to use MultiSelectDropdown + Pills
+- [X] **T017**: Refactor RestrictionsInput to use MultiSelectDropdown + Pills
   - Files: `app/components/RestrictionsInput.tsx`
   - Changes:
     1. Remove "Kosher" and "Halal" from preset list (now 9 options)
@@ -187,7 +187,7 @@
 
 ### Form Integration
 
-- [ ] **T018**: Add PreferencesInput to SettingsForm
+- [X] **T018**: Add PreferencesInput to SettingsForm
   - Files: `app/components/SettingsForm.tsx`
   - Add state: `const [preferences, setPreferences] = useState<string[]>([])`
   - Insert PreferencesInput component above RestrictionsInput in form
@@ -198,7 +198,7 @@
 
 ### AI Integration
 
-- [ ] **T019**: Update AI prompts to distinguish preferences vs restrictions
+- [X] **T019**: Update AI prompts to distinguish preferences vs restrictions
   - Files: `lib/ai/prompts.ts`
   - Update `buildMealPlanPrompt()`:
     - Add section: "Food Preferences (avoid when possible): mushrooms, cilantro"
@@ -210,7 +210,7 @@
 
 ### Testing
 
-- [ ] **T020**: Test Phase 3 preferences and restrictions
+- [X] **T020**: Test Phase 3 preferences and restrictions
   - Test PreferencesInput: add preferences, displays as pills, removes on (x), enforces 50 char limit, shows tooltip
   - Test RestrictionsInput: dropdown has only 9 options (no Kosher/Halal), pills display correctly
   - Test form: both sections save correctly, validation works
@@ -227,7 +227,7 @@
 
 ### Number Input Fixes
 
-- [ ] **T021**: Fix weight/height inputs in BiometricsInput
+- [X] **T021**: Fix weight/height inputs in BiometricsInput
   - Files: `app/components/BiometricsInput.tsx`
   - Changes:
     1. Change inputs from `type="number"` to `type="text"` with `inputMode="numeric"`
@@ -239,7 +239,7 @@
 
 ### Sex Dropdown Fix
 
-- [ ] **T022**: Remove "other" sex option from BiometricsInput
+- [X] **T022**: Remove "other" sex option from BiometricsInput
   - Files: `app/components/BiometricsInput.tsx`, `lib/types.ts`
   - Changes:
     1. Remove "other" from sex dropdown (only "male" and "female")
@@ -251,7 +251,7 @@
 
 ### Meal Plan Display Fixes
 
-- [ ] **T023**: Fix snack ordering in meal plan display
+- [X] **T023**: Fix snack ordering in meal plan display
   - Files: `app/meal-plan/page.tsx` or meal display component
   - Logic:
     ```typescript
@@ -263,7 +263,7 @@
   - Estimated: 30 minutes
   - [P] Can run in parallel with T021-T022
 
-- [ ] **T024**: Add padding in edit view between label and input
+- [X] **T024**: Add padding in edit view between label and input
   - Files: Find meal edit component (likely in meal card or meal display)
   - Change: Add Tailwind class `space-y-3` or `mb-3` to label element
   - Verify: 12px+ spacing between "Edit instructions" label and text input field
@@ -273,7 +273,7 @@
 
 ### Testing
 
-- [ ] **T025**: Test Phase 4 fixes
+- [X] **T025**: Test Phase 4 fixes
   - Test number inputs: can enter integers only (75), cannot enter decimals (75.5 becomes 75), up/down arrows work
   - Test sex dropdown: only shows "male" and "female", no "other"
   - Test migration: if old settings have `sex: "other"`, alert appears prompting update
@@ -291,14 +291,14 @@
 
 ### Next.js Warnings
 
-- [ ] **T026**: Fix Next.js smooth scroll warning
+- [X] **T026**: Fix Next.js smooth scroll warning
   - Files: `app/layout.tsx`
   - Change: Add `data-scroll-behavior="smooth"` attribute to `<html>` element
   - Verify: Browser console shows no smooth scroll warning
   - Dependencies: None (independent)
   - Estimated: 10 minutes
 
-- [ ] **T027**: Fix preload resource warning
+- [X] **T027**: Fix preload resource warning
   - Files: `app/layout.tsx`
   - Check for unused preload links
   - Either remove unused preloads OR ensure correct `as` attribute (e.g., `as="font"`)
@@ -309,7 +309,7 @@
 
 ### AI Configuration
 
-- [ ] **T028**: Add frequency_penalty to AI model
+- [X] **T028**: Add frequency_penalty to AI model
   - Files: `lib/ai/openrouter.ts`
   - Change: In `callModel()` function, add `frequency_penalty: 0.4` to `openrouter.chat.completions.create()` options
   - Location: Around line 71, add line after `top_p: options?.top_p ?? 1,`
@@ -323,7 +323,7 @@
 
 ## Final Testing & Verification
 
-- [ ] **T029**: End-to-end feature test (Manual)
+- [X] **T029**: End-to-end feature test (Manual)
   - Complete full user flow:
     1. Navigate to `/settings`
     2. Select multiple cuisines (Italian, Mexican, Japanese) → verify pills with flags
