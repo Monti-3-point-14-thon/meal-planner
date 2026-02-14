@@ -11,7 +11,7 @@ export type Goal =
   | 'mental_performance'
   | 'general_health';
 
-export type Sex = 'male' | 'female' | 'other';
+export type Sex = 'male' | 'female';
 
 export interface Biometrics {
   weight: number; // kg
@@ -21,8 +21,12 @@ export interface Biometrics {
 }
 
 export interface CulturalContext {
-  cuisine: string; // e.g., "Mediterranean", "Japanese", etc.
+  cuisines: string[]; // e.g., ["Mediterranean", "Japanese", "Italian"]
   location: string; // country/region
+}
+
+export interface FoodPreferences {
+  dislikes: string[]; // e.g., ["mushrooms", "cilantro"] - soft preferences (AI will avoid when possible)
 }
 
 export interface UserSettings {
@@ -30,7 +34,8 @@ export interface UserSettings {
   primary_goal: Goal;
   biometrics: Biometrics;
   cultural_context: CulturalContext;
-  dietary_restrictions: string[]; // e.g., ['vegetarian', 'gluten-free']
+  food_preferences: FoodPreferences; // soft preferences (avoid when possible)
+  dietary_restrictions: string[]; // hard restrictions (MUST be followed) - e.g., ['vegetarian', 'gluten-free']
   created_at: string; // ISO timestamp
   updated_at: string; // ISO timestamp
 }
@@ -172,7 +177,7 @@ export interface SettingsFormData {
   height: number;
   age: number;
   sex: Sex;
-  cuisine: string;
+  cuisines: string[];
   location: string;
   restrictions: string[];
 }
@@ -183,7 +188,7 @@ export function isValidGoal(value: string): value is Goal {
 }
 
 export function isValidSex(value: string): value is Sex {
-  return ['male', 'female', 'other'].includes(value);
+  return ['male', 'female'].includes(value);
 }
 
 export function isValidMealType(value: string): value is MealType {

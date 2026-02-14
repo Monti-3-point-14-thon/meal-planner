@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" data-theme="light" data-scroll-behavior="smooth">
       <body className={font.className}>
         <main className="min-h-screen bg-base-200">
           {children}

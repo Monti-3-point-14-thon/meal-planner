@@ -16,6 +16,7 @@ export interface ModelOptions {
   temperature?: number;
   max_tokens?: number;
   top_p?: number;
+  frequency_penalty?: number;
 }
 
 export interface CallModelResponse {
@@ -56,8 +57,9 @@ export async function callModel(
     userMessageLength: messages.find(m => m.role === 'user')?.content.length || 0,
     options: {
       temperature: options?.temperature ?? 0.7,
-      max_tokens: options?.max_tokens ?? 4000,
+      max_tokens: options?.max_tokens ?? 8000,
       top_p: options?.top_p ?? 1,
+      frequency_penalty: options?.frequency_penalty ?? 0.4,
     },
     apiKeyPresent: !!process.env.OPENROUTER_API_KEY,
     apiKeyPrefix: process.env.OPENROUTER_API_KEY?.substring(0, 10) + '...',
@@ -73,8 +75,9 @@ export async function callModel(
       model,
       messages,
       temperature: options?.temperature ?? 0.7,
-      max_tokens: options?.max_tokens ?? 4000,
+      max_tokens: options?.max_tokens ?? 8000,
       top_p: options?.top_p ?? 1,
+      frequency_penalty: options?.frequency_penalty ?? 0.4,
     });
 
     const choice = completion.choices[0];

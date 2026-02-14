@@ -117,7 +117,7 @@ export default function MealEditModal({
           {/* Form */}
           <form onSubmit={handleSubmit}>
             <div className="form-control">
-              <label className="label">
+              <label className="label mb-3">
                 <span className="label-text font-semibold">
                   How would you like to modify this meal?
                 </span>

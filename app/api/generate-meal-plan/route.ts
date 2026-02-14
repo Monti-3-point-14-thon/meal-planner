@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
         weight: settings.biometrics.weight,
         height: settings.biometrics.height,
       },
-      culturalCuisine: settings.cultural_context.cuisine,
+      culturalCuisines: settings.cultural_context.cuisines,
+      preferencesCount: settings.food_preferences?.dislikes?.length || 0,
       restrictionsCount: settings.dietary_restrictions.length,
     }, null, 2));
 
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
       model: modelToUse,
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: 8000,
     }, null, 2));
 
     const response = await callModel(
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
       ],
       {
         temperature: 0.7,
-        max_tokens: 4000,
+        max_tokens: 8000,
       }
     );
 

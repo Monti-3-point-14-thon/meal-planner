@@ -48,6 +48,19 @@ export function getSettings(): UserSettings | null {
     if (!serialized) return null;
 
     const settings = JSON.parse(serialized) as UserSettings;
+
+    // Backwards-compatible migration: convert old cuisine string to cuisines array
+    const cultural = settings.cultural_context as any;
+    if (cultural.cuisine && typeof cultural.cuisine === 'string' && !cultural.cuisines) {
+      console.warn('⚠️ Migrating old cuisine format to cuisines array');
+      settings.cultural_context = {
+        location: cultural.location,
+        cuisines: [cultural.cuisine],
+      };
+      // Save the migrated version
+      saveSettings(settings);
+    }
+
     return settings;
   } catch (error) {
     handleStorageError('get settings', error);

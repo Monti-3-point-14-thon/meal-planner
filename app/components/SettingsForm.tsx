@@ -8,6 +8,7 @@ import { saveSettings } from '@/lib/storage';
 import GoalSelector from './GoalSelector';
 import BiometricsInput from './BiometricsInput';
 import CultureSelector from './CultureSelector';
+import PreferencesInput from './PreferencesInput';
 import RestrictionsInput from './RestrictionsInput';
 
 interface FormErrors {
@@ -19,7 +20,7 @@ interface FormErrors {
     sex?: string;
   };
   cultural?: {
-    cuisine?: string;
+    cuisines?: string;
     location?: string;
   };
 }
@@ -38,9 +39,10 @@ export default function SettingsForm() {
     sex: '' as Sex,
   });
   const [cultural, setCultural] = useState<CulturalContext>({
-    cuisine: '',
+    cuisines: [],
     location: '',
   });
+  const [preferences, setPreferences] = useState<string[]>([]);
   const [restrictions, setRestrictions] = useState<string[]>([]);
 
   const validate = (): boolean => {
@@ -68,8 +70,8 @@ export default function SettingsForm() {
 
     // Validate cultural context
     newErrors.cultural = {};
-    if (!cultural.cuisine) {
-      newErrors.cultural.cuisine = 'Please select a cuisine preference';
+    if (!cultural.cuisines || cultural.cuisines.length === 0) {
+      newErrors.cultural.cuisines = 'Please select at least one cuisine preference';
     }
     if (!cultural.location) {
       newErrors.cultural.location = 'Please enter your location';
@@ -104,6 +106,9 @@ export default function SettingsForm() {
         primary_goal: goal,
         biometrics,
         cultural_context: cultural,
+        food_preferences: {
+          dislikes: preferences,
+        },
         dietary_restrictions: restrictions,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -141,6 +146,13 @@ export default function SettingsForm() {
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <CultureSelector value={cultural} onChange={setCultural} errors={errors.cultural} />
+        </div>
+      </div>
+
+      {/* Food Preferences */}
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+          <PreferencesInput value={preferences} onChange={setPreferences} />
         </div>
       </div>
 

@@ -11,7 +11,7 @@ export function buildMealPlanPrompt(settings: UserSettings): {
   system: string;
   user: string;
 } {
-  const { primary_goal, biometrics, cultural_context, dietary_restrictions } = settings;
+  const { primary_goal, biometrics, cultural_context, food_preferences, dietary_restrictions } = settings;
 
   // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
   const bmr = calculateBMR(biometrics);
@@ -20,10 +20,16 @@ export function buildMealPlanPrompt(settings: UserSettings): {
   // Map goal to nutritional focus
   const goalContext = getGoalContext(primary_goal);
 
+  // Format food preferences as soft constraints
+  const preferencesText =
+    food_preferences.dislikes.length > 0
+      ? `\n\nFOOD PREFERENCES (avoid when possible):\n${food_preferences.dislikes.map((p) => `- ${p}`).join('\n')}`
+      : '';
+
   // Format dietary restrictions as hard constraints
   const restrictionsText =
     dietary_restrictions.length > 0
-      ? `\n\nCRITICAL DIETARY RESTRICTIONS (MUST BE FOLLOWED):\n${dietary_restrictions.map((r) => `- ${r}`).join('\n')}`
+      ? `\n\nCRITICAL DIETARY RESTRICTIONS (MUST BE FOLLOWED - NEVER VIOLATE):\n${dietary_restrictions.map((r) => `- ${r}`).join('\n')}`
       : '';
 
   const systemPrompt = `You are an expert nutritionist and meal planner with deep knowledge of:
@@ -48,8 +54,8 @@ Always provide clear nutritional reasoning based on scientific evidence.`;
 - Weight: ${biometrics.weight} kg
 - Height: ${biometrics.height} cm
 - Primary Goal: ${goalContext.name}
-- Cultural Preference: ${cultural_context.cuisine} cuisine
-- Location: ${cultural_context.location}${restrictionsText}
+- Cultural Preference: ${cultural_context.cuisines.join(', ')} cuisine
+- Location: ${cultural_context.location}${preferencesText}${restrictionsText}
 
 **Nutritional Target:**
 - Target Daily Calories: ~${targetCalories} kcal
@@ -65,7 +71,7 @@ Always provide clear nutritional reasoning based on scientific evidence.`;
    - Scientific nutritional reasoning (2-3 sentences explaining why this meal supports their goal)
    - Preparation time estimate
    - Cooking instructions (brief)
-3. Meals should align with ${cultural_context.cuisine} cuisine preferences
+3. Meals should draw from ${cultural_context.cuisines.join(', ')} cuisine preferences
 4. Use ingredients commonly available in ${cultural_context.location}
 5. Total daily macros should sum to approximately ${targetCalories} kcal
 ${dietary_restrictions.length > 0 ? `6. ABSOLUTELY NO ingredients that violate these restrictions: ${dietary_restrictions.join(', ')}` : ''}
@@ -132,12 +138,17 @@ export function buildMealEditPrompt(
   system: string;
   user: string;
 } {
-  const { primary_goal, biometrics, cultural_context, dietary_restrictions } = settings;
+  const { primary_goal, biometrics, cultural_context, food_preferences, dietary_restrictions } = settings;
   const goalContext = getGoalContext(primary_goal);
+
+  const preferencesText =
+    food_preferences.dislikes.length > 0
+      ? `\n\nFOOD PREFERENCES (avoid when possible):\n${food_preferences.dislikes.map((p) => `- ${p}`).join('\n')}`
+      : '';
 
   const restrictionsText =
     dietary_restrictions.length > 0
-      ? `\n\nCRITICAL DIETARY RESTRICTIONS (MUST BE FOLLOWED):\n${dietary_restrictions.map((r) => `- ${r}`).join('\n')}`
+      ? `\n\nCRITICAL DIETARY RESTRICTIONS (MUST BE FOLLOWED - NEVER VIOLATE):\n${dietary_restrictions.map((r) => `- ${r}`).join('\n')}`
       : '';
 
   const systemPrompt = `You are an expert nutritionist helping refine a meal plan. You must:
@@ -158,8 +169,8 @@ Ingredients: ${meal.ingredients.map((ing) => `${ing.name} (${ing.amount})`).join
 
 **User Context (maintain alignment):**
 - Goal: ${goalContext.name}
-- Cultural Preference: ${cultural_context.cuisine} cuisine
-- Location: ${cultural_context.location}${restrictionsText}
+- Cultural Preference: ${cultural_context.cuisines.join(', ')} cuisine
+- Location: ${cultural_context.location}${preferencesText}${restrictionsText}
 
 **Requirements:**
 1. Apply the user's requested changes

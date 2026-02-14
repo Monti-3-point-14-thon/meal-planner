@@ -22,11 +22,14 @@ export default function MealPlanView({
   onUndoEdit,
   onAddSnack,
 }: MealPlanViewProps) {
-  // Sort meals by type order (breakfast, lunch, dinner, snack)
-  const mealOrder = ['breakfast', 'lunch', 'dinner', 'snack'];
-  const sortedMeals = [...mealPlan.meals].sort(
-    (a, b) => mealOrder.indexOf(a.type) - mealOrder.indexOf(b.type)
-  );
+  // Sort meals by chronological order (breakfast -> morning snack -> lunch -> afternoon snack -> dinner -> evening snack)
+  const mealOrder = ['breakfast', 'snack_morning', 'lunch', 'snack_afternoon', 'dinner', 'snack_evening'];
+  const sortedMeals = [...mealPlan.meals].sort((a, b) => {
+    const indexA = mealOrder.indexOf(a.type);
+    const indexB = mealOrder.indexOf(b.type);
+    // If type not found in mealOrder, put it at the end
+    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+  });
 
   // Format date
   const planDate = new Date(mealPlan.date).toLocaleDateString('en-US', {

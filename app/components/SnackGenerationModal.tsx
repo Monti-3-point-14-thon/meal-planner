@@ -92,7 +92,7 @@ export default function SnackGenerationModal({
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Timing */}
             <div className="form-control">
-              <label className="label">
+              <label className="label mb-3">
                 <span className="label-text font-semibold">When?</span>
               </label>
               <select
@@ -109,7 +109,7 @@ export default function SnackGenerationModal({
 
             {/* Calorie Target */}
             <div className="form-control">
-              <label className="label">
+              <label className="label mb-3">
                 <span className="label-text font-semibold">Calorie Target</span>
               </label>
               <input
@@ -122,7 +122,7 @@ export default function SnackGenerationModal({
                 className="range range-primary"
                 disabled={isGenerating}
               />
-              <div className="flex justify-between text-xs px-2 mt-1">
+              <div className="flex justify-between text-xs mt-2">
                 <span>50 kcal</span>
                 <span className="font-bold text-primary">{calorieTarget} kcal</span>
                 <span>500 kcal</span>
