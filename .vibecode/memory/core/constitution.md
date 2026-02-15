@@ -1,8 +1,8 @@
 # Project Constitution
 
-**Version**: 1.0.0
+**Version**: 1.1.0
 **Created**: 2026-02-07
-**Last Updated**: 2026-02-11
+**Last Updated**: 2026-02-14
 
 ## Core Principles
 
@@ -20,6 +20,20 @@ Our north star is health outcomes, not recipe novelty. Meals should be nutrition
 
 ### V. Ongoing Support Over One-Shot Output
 A single meal plan isn't the product — iterative, adaptive guidance is. We build for relationships over time: check-ins, adjustments, progress tracking. The value compounds with continued use.
+
+### VI. Domain Expertise as Competitive Moat
+We have access to real nutritionist expertise (personal trainer + educated nutritionist with years of 1-on-1 client experience, especially training women). This is rare — most meal planning apps are built by developers guessing at what matters. We build from the inside out, with domain validation built-in.
+
+**Strategic Advantage**:
+- Target use case to nail first: Women in training programs (strength, endurance, weight loss)
+- Meal plans that support training goals and body composition objectives
+- Personalization based on workout regimen, energy needs, and recovery
+
+**Application**:
+- Don't guess at what context matters for personalization — interview domain expert, then build
+- Validate AI personalization features with expert assessment before launch
+- Use expert's client experience to identify what makes plans work vs fail
+- Leverage expert knowledge to define success metrics that actually matter
 
 ## Work Classification (Shreyas Doshi LNO Framework)
 
@@ -61,6 +75,23 @@ A single meal plan isn't the product — iterative, adaptive guidance is. We bui
 - Minimize dependencies. Every new library is a maintenance cost.
 - Prefer Next.js built-in capabilities before reaching for third-party solutions.
 
+### Two-Track Development Strategy
+When building features, distinguish between technical infrastructure and domain-specific decisions:
+
+**Track 1 - Build Now (Domain-Agnostic)**:
+- Technical infrastructure that doesn't require domain expertise
+- Examples: Database schemas, authentication, UI patterns, API design
+- Goal: Continue learning and building momentum while waiting for expert insights
+- Principle: Use extensible patterns (flexible schemas, metadata fields) to accommodate future insights
+
+**Track 2 - Wait for Expert (Domain-Specific)**:
+- Decisions that require nutritionist/domain expert validation
+- Examples: What context matters for personalization, how to measure quality, personalization levers
+- Goal: Make informed decisions based on expert knowledge, not developer guesses
+- Principle: Interview expert, validate assumptions, then build
+
+**Rationale**: Enables continuous development velocity while ensuring domain-critical decisions are expert-validated.
+
 ## Prototype vs Robust Decision Framework
 
 ### Default Approach: Balanced (Prototype-First with Fast Scale Path)
@@ -88,6 +119,25 @@ We ship fast, validate with real users, and upgrade what works. Technical debt i
 3. Decide: kill, keep as-is, or rebuild robust
 4. Document decision in `.vibecode/memory/decisions/active/`
 
+### Flexible Schema Philosophy (Prototype-But-Avoid-Rebuilds)
+**Principle**: Build extensible data models from day 1 to accommodate future insights without migrations.
+
+**Strategy**:
+- Use proven, scalable foundations even in MVP (MongoDB, NextAuth) — accept technical debt in features, NOT in infrastructure
+- Add flexible schema patterns: optional fields, metadata catch-alls, JSON columns for future expansion
+- Example: `training_context?: {[key: string]: any}` fields that expert will define later
+- Rationale: When domain expert provides insights, we extend schemas rather than rebuild
+
+**What's Prototype** (Can iterate):
+- Simple UI patterns (can refine later)
+- Basic feature implementations (can enhance)
+- Manual processes (can automate)
+
+**What's NOT Prototype** (Build scalable from start):
+- Database infrastructure (MongoDB scales to millions)
+- Authentication system (NextAuth is production-grade)
+- Data models (extensible schemas avoid migrations)
+
 ## AI Usage Guidelines
 
 ### When to Use AI
@@ -113,6 +163,23 @@ We ship fast, validate with real users, and upgrade what works. Technical debt i
 - If OpenRouter is unavailable: show clear messaging, never show partial/wrong results
 - If Tavily fails: defer to nutritionist-curated database, flag as "pending verification"
 - Nutritional data should have a non-AI fallback (curated database)
+
+### Expert-Validated Personalization
+**Principle**: AI personalization features require domain expert validation before launch.
+
+**Process**:
+1. **Don't guess** what context matters for personalization — interview domain expert first
+2. **Measure improvements** using feedback data + expert quality assessment
+3. **Validate changes**: "Does this actually move the needle?" (expert defines "good")
+4. **Iterate with expert**: Use expert's client experience to refine AI prompts
+5. **A/B test with validation**: Compare prompt variations, have expert assess quality difference
+
+**Examples**:
+- Before adding "training type" field → Ask expert: "Does this matter for meal planning quality?"
+- Before changing macro distribution logic → Have expert review: "Is this nutritionally sound?"
+- After prompt refinement → Measure with feedback data, validate with expert: "Are these plans better?"
+
+**Rationale**: We have rare access to domain expertise — leverage it to make personalization actually work, not just seem personalized.
 
 ## Design Philosophy
 
@@ -150,6 +217,33 @@ This constitution supersedes ad-hoc decisions. If a decision contradicts the con
 - Review after each major feature ships
 - Full review after first 10 real users
 - Update as project matures (MVP -> scale-up)
+
+---
+
+## Changelog
+
+### Version 1.1.0 (2026-02-14)
+**Context**: Post-Feature 002, strategic planning for Phase 1 (Database + Auth infrastructure)
+
+**Changes**:
+1. **Added Principle VI**: Domain Expertise as Competitive Moat
+   - Rationale: Codify strategic advantage of having nutritionist expertise in-house
+   - Impact: Guides decision-making to leverage expert validation vs developer guesses
+
+2. **Added Two-Track Development Strategy** (Technical Standards)
+   - Rationale: Enable continuous building while waiting for expert insights
+   - Impact: Clear guidance on what can be built now vs what needs expert input
+
+3. **Added Flexible Schema Philosophy** (Prototype vs Robust)
+   - Rationale: Clarify "prototype fast but avoid rebuilds" approach
+   - Impact: Build extensible data models from day 1, accept debt in features not infrastructure
+
+4. **Added Expert-Validated Personalization** (AI Usage Guidelines)
+   - Rationale: Ensure AI personalization features are validated by domain expert
+   - Impact: Measure improvements with data + expert assessment, not guesses
+
+**Reviewed by**: Adrien Muller (solo founder)
+**Next review**: After Feature 003 (Database + Auth) complete
 
 ---
 

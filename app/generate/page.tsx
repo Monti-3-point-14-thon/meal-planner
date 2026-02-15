@@ -3,14 +3,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getSettings, saveMealPlan } from '@/lib/storage';
-import { MealPlan } from '@/lib/types';
+import { useRouter, useSearchParams } from 'next/navigation';
 import GenerationLoader from '@/app/components/GenerationLoader';
 import ErrorDisplay from '@/app/components/ErrorDisplay';
 
 export default function GeneratePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [errorDetails, setErrorDetails] = useState<string | null>(null);
 
@@ -22,28 +21,21 @@ export default function GeneratePage() {
     const requestTimestamp = new Date().toISOString();
     console.log('🔵 [Client] Starting meal generation', {
       timestamp: requestTimestamp,
-      endpoint: '/api/generate-meal-plan',
+      endpoint: '/api/meal-plans',
     });
 
     try {
-      // Get user settings from localStorage
-      const settings = getSettings();
-
-      if (!settings) {
-        setError('No user settings found');
-        setErrorDetails(
-          'Please complete the settings form first before generating a meal plan.'
-        );
-        return;
-      }
+      // Get primaryGoal from query params or use default
+      const primaryGoal = searchParams.get('goal') || 'general_health';
+      const customPrompt = searchParams.get('prompt') || undefined;
 
       // Call API to generate meal plan
-      const response = await fetch('/api/generate-meal-plan', {
+      const response = await fetch('/api/meal-plans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ settings }),
+        body: JSON.stringify({ primaryGoal, customPrompt }),
       });
 
       console.log('🔵 [Client] Response received', {
@@ -60,29 +52,22 @@ export default function GeneratePage() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        const errorDetails = data.error || data.details || 'Generation failed';
+        const errorDetails = data.error || 'Generation failed';
         console.error('❌ [Client] Generation failed', {
           timestamp: new Date().toISOString(),
           status: response.status,
           error: errorDetails,
-          details: data.details,
-          requestId: data.requestId,
         });
         throw new Error(errorDetails);
       }
 
       console.log('✅ [Client] Meal plan generated', {
         timestamp: new Date().toISOString(),
-        mealsCount: data.mealPlan.meals.length,
-        totalCalories: data.mealPlan.daily_totals.calories,
+        weekPlanId: data.weekPlanId,
       });
 
-      // Save meal plan to localStorage
-      const mealPlan: MealPlan = data.mealPlan;
-      saveMealPlan(mealPlan);
-
-      // Navigate to meal plan display page
-      router.push('/meal-plan');
+      // Navigate to meal plan display page with the new plan ID
+      router.push(`/meal-plan/${data.weekPlanId}`);
     } catch (err: any) {
       console.error('❌ [Client] Fetch error', {
         timestamp: new Date().toISOString(),
