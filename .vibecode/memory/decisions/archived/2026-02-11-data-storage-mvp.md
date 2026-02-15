@@ -1,5 +1,14 @@
 # Decision: Data Storage Strategy for MVP
 
+**⚠️ ARCHIVED: 2026-02-15**
+**Superseded by**: Feature 003 (Database & Auth Infrastructure)
+**Reason**: This decision to use localStorage for MVP was successfully implemented in Feature 001-002. Feature 003 completed the planned migration to MongoDB with NextAuth authentication, making this decision complete and no longer active. See active decisions:
+- `2026-02-14-mongodb-free-tier.md` - MongoDB Atlas implementation
+- `2026-02-14-no-localstorage-migration.md` - Migration strategy decision
+- `2026-02-14-user-profile-separate-model.md` - Data model architecture
+
+---
+
 **Date**: 2026-02-11
 **Feature**: 001-meal-plan-generator
 **Context**: MVP with 2 users, no auth yet, need fast implementation
