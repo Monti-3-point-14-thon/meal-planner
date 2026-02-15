@@ -9,7 +9,7 @@ import Snack from "@/models/Snack";
 // GET - Fetch single meal plan with all details
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -19,7 +19,7 @@ export async function GET(
 
     await connectMongo();
 
-    const { id } = params;
+    const { id } = await params;
 
     // Fetch week plan
     const weekPlan = await WeekPlan.findOne({
@@ -83,7 +83,7 @@ export async function GET(
 // PUT - Update meal plan metadata
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -93,7 +93,7 @@ export async function PUT(
 
     await connectMongo();
 
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     // Find week plan
@@ -129,7 +129,7 @@ export async function PUT(
 // DELETE - Delete meal plan and all associated data
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -139,7 +139,7 @@ export async function DELETE(
 
     await connectMongo();
 
-    const { id } = params;
+    const { id } = await params;
 
     // Find week plan
     const weekPlan = await WeekPlan.findOne({

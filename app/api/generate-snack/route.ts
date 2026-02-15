@@ -167,7 +167,7 @@ Provide science-backed snack ideas that fit seamlessly into the user's meal plan
 - Age: ${biometrics.age}, Sex: ${biometrics.sex}
 - Weight: ${biometrics.weight} kg, Height: ${biometrics.height} cm
 - Primary Goal: ${goalContext.name}
-- Cultural Preference: ${cultural_context.cuisine} cuisine
+- Cultural Preferences: ${cultural_context.cuisines.join(", ")} cuisines
 - Location: ${cultural_context.location}${restrictionsText}
 
 **Snack Requirements:**
@@ -180,7 +180,7 @@ ${preference ? `- User Preference: ${preference}` : ''}
 1. Keep it simple and quick to prepare (≤10 minutes)
 2. Appropriate for the timing (e.g., no heavy foods late at night)
 3. Support the user's health goal: ${goalContext.focus}
-4. Align with ${cultural_context.cuisine} preferences when possible
+4. Align with ${cultural_context.cuisines.join(", ")} preferences when possible
 5. Use ingredients available in ${cultural_context.location}
 ${dietary_restrictions.length > 0 ? `6. ABSOLUTELY NO ingredients that violate: ${dietary_restrictions.join(', ')}` : ''}
 

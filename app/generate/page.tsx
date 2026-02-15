@@ -2,12 +2,12 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import GenerationLoader from '@/app/components/GenerationLoader';
 import ErrorDisplay from '@/app/components/ErrorDisplay';
 
-export default function GeneratePage() {
+function GeneratePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -98,4 +98,13 @@ export default function GeneratePage() {
 
   // Show loading state
   return <GenerationLoader />;
+}
+
+// Wrap in Suspense for Next.js 15.5+ useSearchParams requirement
+export default function GeneratePage() {
+  return (
+    <Suspense fallback={<GenerationLoader />}>
+      <GeneratePageContent />
+    </Suspense>
+  );
 }
