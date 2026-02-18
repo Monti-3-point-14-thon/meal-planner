@@ -28,12 +28,12 @@
       },
       "design-first-dev": {
         "enabled": true,
-        "weight": "medium",
+        "weight": "high",
         "description": "Craft quality standards"
       },
       "quality-speed": {
         "enabled": true,
-        "weight": "medium",
+        "weight": "critical",
         "description": "Balance craft vs velocity"
       },
       "jtbd-building": {

@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
+import LayoutWrapper from "./components/navigation/LayoutWrapper";
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,9 @@ export default function RootLayout({
     <html lang="en" data-theme="light" data-scroll-behavior="smooth">
       <body className={font.className}>
         <AuthProvider>
-          <main className="min-h-screen bg-base-200">
+          <LayoutWrapper>
             {children}
-          </main>
+          </LayoutWrapper>
         </AuthProvider>
       </body>
     </html>

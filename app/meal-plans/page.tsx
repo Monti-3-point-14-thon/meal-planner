@@ -53,17 +53,7 @@ export default async function HistoryPage({ searchParams }: PageProps) {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-4xl font-bold">Meal Plan History</h1>
-            <div className="flex gap-2">
-              <Link href="/dashboard" className="btn btn-ghost">
-                Dashboard
-              </Link>
-              <Link href="/generate" className="btn btn-primary">
-                Generate New Plan
-              </Link>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold mb-4">Meal Plan History</h1>
           <p className="text-base-content/70">
             Browse all your personalized meal plans
           </p>

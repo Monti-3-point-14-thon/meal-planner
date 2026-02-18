@@ -10,6 +10,7 @@ set -e  # Exit on error
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Project root (parent of .vibecode)
@@ -22,6 +23,165 @@ echo "Project: $PROJECT_NAME"
 echo "Root: $PROJECT_ROOT"
 echo ""
 
+# Detect project state: fresh, existing-code, or vibecoding-active
+detect_project_state() {
+    # Check if vibecoding has been used before
+    if [ -f "$VIBECODE_DIR/session/state.json" ]; then
+        # Parse state.json to check if initialized
+        local phase=$(grep '"phase"' "$VIBECODE_DIR/session/state.json" | cut -d'"' -f4)
+        local initialized=$(grep '"initialized"' "$VIBECODE_DIR/session/state.json" | head -1 | grep -v "null")
+
+        if [ -n "$initialized" ] && [ "$phase" != "uninitialized" ]; then
+            echo "vibecoding-active"
+            return
+        fi
+    fi
+
+    # Check for existing project indicators
+    local has_code=0
+    [ -f "$PROJECT_ROOT/package.json" ] && has_code=1
+    [ -f "$PROJECT_ROOT/requirements.txt" ] && has_code=1
+    [ -f "$PROJECT_ROOT/Cargo.toml" ] && has_code=1
+    [ -f "$PROJECT_ROOT/go.mod" ] && has_code=1
+    [ -d "$PROJECT_ROOT/src" ] && has_code=1
+    [ -d "$PROJECT_ROOT/app" ] && has_code=1
+
+    if [ $has_code -eq 1 ]; then
+        echo "existing-code"
+    else
+        echo "fresh"
+    fi
+}
+
+PROJECT_STATE=$(detect_project_state)
+
+# Handle different project states
+case "$PROJECT_STATE" in
+    "vibecoding-active")
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}Vibecoding Already Active${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+
+        # Show last active date if available
+        if [ -f "$VIBECODE_DIR/session/state.json" ]; then
+            LAST_ACTIVE=$(grep '"last-active"' "$VIBECODE_DIR/session/state.json" | cut -d'"' -f4)
+            [ -n "$LAST_ACTIVE" ] && [ "$LAST_ACTIVE" != "null" ] && echo "Last active: $LAST_ACTIVE"
+        fi
+
+        echo ""
+        echo "This project is already using vibecoding."
+        echo ""
+        echo "Options:"
+        echo "  1) Update timestamp only (quick resume)"
+        echo "  2) Re-onboard codebase (if major changes since last use)"
+        echo "  3) Exit (use /vibecode:resume in Claude Code)"
+        echo ""
+        read -p "Choice [1-3]: " resume_choice
+
+        case $resume_choice in
+            1)
+                INTEGRATION_MODE="update-only"
+                ;;
+            2)
+                INTEGRATION_MODE="re-onboard"
+                ;;
+            3)
+                echo ""
+                echo "Run /vibecode:resume in Claude Code to continue work."
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Invalid choice. Exiting.${NC}"
+                exit 1
+                ;;
+        esac
+        ;;
+
+    "existing-code")
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${YELLOW}Existing Project Detected${NC}"
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+        echo "Found existing code:"
+        [ -f "$PROJECT_ROOT/package.json" ] && echo "  • package.json"
+        [ -f "$PROJECT_ROOT/requirements.txt" ] && echo "  • requirements.txt"
+        [ -f "$PROJECT_ROOT/Cargo.toml" ] && echo "  • Cargo.toml"
+        [ -f "$PROJECT_ROOT/go.mod" ] && echo "  • go.mod"
+        [ -d "$PROJECT_ROOT/src" ] && echo "  • src/ directory"
+        [ -d "$PROJECT_ROOT/app" ] && echo "  • app/ directory"
+        echo ""
+        echo "Initialize vibecoding framework?"
+        echo "  1) Yes (integrate into existing project)"
+        echo "  2) No (exit)"
+        echo ""
+        read -p "Choice [1-2]: " init_choice
+
+        if [ "$init_choice" = "1" ]; then
+            INTEGRATION_MODE="first-time-existing"
+        else
+            echo "Initialization cancelled."
+            exit 0
+        fi
+        ;;
+
+    "fresh")
+        echo -e "${BLUE}Fresh Project - Greenfield Mode${NC}"
+        INTEGRATION_MODE="greenfield"
+        ;;
+esac
+
+echo ""
+
+# Handle CLAUDE.md based on integration mode
+if [ "$INTEGRATION_MODE" = "first-time-existing" ] && [ -f "$PROJECT_ROOT/CLAUDE.md" ]; then
+    echo -e "${YELLOW}CLAUDE.md already exists in your project${NC}"
+    echo ""
+    echo "How should we handle it?"
+    echo "  1) Append vibecoding instructions (recommended)"
+    echo "  2) Backup existing and create new"
+    echo "  3) Skip (manual merge later)"
+    echo ""
+    read -p "Choice [1-3]: " claude_choice
+
+    case $claude_choice in
+        1)
+            cp "$PROJECT_ROOT/CLAUDE.md" "$PROJECT_ROOT/CLAUDE.md.backup"
+            echo "" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "---" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "# Vibecoding Framework Integration" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "This project now uses the vibecoding framework for structured development." >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "See: .vibecode/ directory for framework files" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "See: CLAUDE.md.backup for your original instructions" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "## Setup Checklist" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "- [ ] Run \`/vibecode:onboard\` to audit codebase" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "- [ ] Run \`/vibecode:constitution\` for evolution principles" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo "- [ ] Run \`/vibecode:specify\` to start first feature" >> "$PROJECT_ROOT/CLAUDE.md"
+            echo ""
+            echo -e "${GREEN}✓ Appended to CLAUDE.md (backup created)${NC}"
+            echo ""
+            ;;
+        2)
+            mv "$PROJECT_ROOT/CLAUDE.md" "$PROJECT_ROOT/CLAUDE.md.backup"
+            echo -e "${GREEN}✓ Backed up to CLAUDE.md.backup${NC}"
+            echo "  You can create a new CLAUDE.md or the framework will work without one."
+            echo ""
+            ;;
+        3)
+            echo "Skipped CLAUDE.md handling. You can manually merge later."
+            echo ""
+            ;;
+        *)
+            echo -e "${RED}Invalid choice. Skipping CLAUDE.md handling.${NC}"
+            echo ""
+            ;;
+    esac
+fi
+
 # Check if .vibecode exists
 if [ -d "$VIBECODE_DIR" ]; then
     echo -e "${YELLOW}  .vibecode directory already exists${NC}"
@@ -30,13 +190,15 @@ if [ -d "$VIBECODE_DIR" ]; then
 fi
 
 # Function to create file if it doesn't exist
+SKIPPED_COUNT=0
+
 create_if_missing() {
     local file_path="$1"
     local content="$2"
     local description="$3"
 
     if [ -f "$file_path" ]; then
-        echo -e "${YELLOW}  Skipped${NC}: $description (already exists)"
+        SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
     else
         mkdir -p "$(dirname "$file_path")"
         echo "$content" > "$file_path"
@@ -87,35 +249,116 @@ echo ""
 echo "Creating configuration files..."
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-create_if_missing "$VIBECODE_DIR/session/state.json" "{
-  \"project\": {
-    \"name\": \"$PROJECT_NAME\",
-    \"initialized\": \"$TIMESTAMP\",
-    \"last-active\": \"$TIMESTAMP\",
-    \"version\": \"0.1.0\"
-  },
-  \"current\": {
-    \"feature\": null,
-    \"phase\": \"initialization\",
-    \"branch\": null,
-    \"last-command\": \"init\"
-  },
-  \"history\": {
-    \"features-completed\": [],
-    \"total-features\": 0,
-    \"last-milestone\": null
-  },
-  \"flags\": {
-    \"has-constitution\": false,
-    \"has-boilerplate\": false,
-    \"pm-skills-configured\": false,
-    \"design-system-initialized\": false
-  }
-}" "session/state.json"
+# Set flags based on integration mode
+case "$INTEGRATION_MODE" in
+    "first-time-existing"|"re-onboard")
+        EXISTING_FLAG="true"
+        ONBOARDING_NEEDED="true"
+        ONBOARDING_COMPLETE="false"
+        ;;
+    "vibecoding-active"|"update-only")
+        EXISTING_FLAG="true"
+        ONBOARDING_NEEDED="false"
+        ONBOARDING_COMPLETE="true"
+        ;;
+    "greenfield")
+        EXISTING_FLAG="false"
+        ONBOARDING_NEEDED="false"
+        ONBOARDING_COMPLETE="false"
+        ;;
+esac
 
-# Update state.json timestamp if it already exists
 STATE_FILE="$VIBECODE_DIR/session/state.json"
-if [ -f "$STATE_FILE" ]; then
+
+# Validate flags based on actual file state
+validate_flags() {
+    # Check if constitution is filled (not just template)
+    if [ -f "$VIBECODE_DIR/memory/core/constitution.md" ]; then
+        if grep -q "\[PRINCIPLE_1_NAME\]" "$VIBECODE_DIR/memory/core/constitution.md" 2>/dev/null; then
+            HAS_CONSTITUTION="false"  # Still template
+        else
+            HAS_CONSTITUTION="true"   # Filled in
+        fi
+    else
+        HAS_CONSTITUTION="false"
+    fi
+
+    # Check if boilerplate is configured
+    if [ -f "$VIBECODE_DIR/boilerplate/boilerplate-config.json" ]; then
+        if grep -q '"enabled": true' "$VIBECODE_DIR/boilerplate/boilerplate-config.json" 2>/dev/null; then
+            HAS_BOILERPLATE="true"
+        else
+            HAS_BOILERPLATE="false"
+        fi
+    else
+        HAS_BOILERPLATE="false"
+    fi
+
+    # Check if PM skills are configured (non-default)
+    if [ -f "$VIBECODE_DIR/pm-skills-config.json" ]; then
+        # Check if any skill has been modified from defaults
+        if grep -q '"weight": "custom"' "$VIBECODE_DIR/pm-skills-config.json" 2>/dev/null; then
+            PM_SKILLS_CONFIGURED="true"
+        else
+            PM_SKILLS_CONFIGURED="false"
+        fi
+    else
+        PM_SKILLS_CONFIGURED="false"
+    fi
+
+    # Check if design system is initialized
+    if [ -d "$VIBECODE_DIR/memory/design-system" ]; then
+        # Check if any design system files exist with content (not just .gitkeep)
+        local design_files=$(find "$VIBECODE_DIR/memory/design-system" -type f ! -name ".gitkeep" 2>/dev/null | wc -l)
+        if [ "$design_files" -gt 0 ]; then
+            DESIGN_SYSTEM_INITIALIZED="true"
+        else
+            DESIGN_SYSTEM_INITIALIZED="false"
+        fi
+    else
+        DESIGN_SYSTEM_INITIALIZED="false"
+    fi
+}
+
+# Only create state.json if it doesn't exist OR if re-onboarding OR first-time existing
+if [ ! -f "$STATE_FILE" ] || [ "$INTEGRATION_MODE" = "re-onboard" ] || [ "$INTEGRATION_MODE" = "first-time-existing" ]; then
+    # Validate flags based on actual files
+    validate_flags
+
+    # Create with validated flags
+    cat > "$STATE_FILE" << EOF
+{
+  "project": {
+    "name": "$PROJECT_NAME",
+    "initialized": "$TIMESTAMP",
+    "last-active": "$TIMESTAMP",
+    "version": "0.1.0"
+  },
+  "current": {
+    "feature": null,
+    "phase": "initialization",
+    "branch": null,
+    "last-command": "init"
+  },
+  "history": {
+    "features-completed": [],
+    "total-features": 0,
+    "last-milestone": null
+  },
+  "flags": {
+    "has-constitution": ${HAS_CONSTITUTION},
+    "has-boilerplate": ${HAS_BOILERPLATE},
+    "pm-skills-configured": ${PM_SKILLS_CONFIGURED},
+    "design-system-initialized": ${DESIGN_SYSTEM_INITIALIZED},
+    "existing-project": ${EXISTING_FLAG},
+    "onboarding-complete": ${ONBOARDING_COMPLETE},
+    "onboarding-needed": ${ONBOARDING_NEEDED}
+  }
+}
+EOF
+    echo -e "${GREEN}  Created${NC}: session/state.json"
+else
+    # Just update timestamp (vibecoding-active + update-only mode)
     perl -i -pe "s/\"last-active\": \"[^\"]*\"/\"last-active\": \"$TIMESTAMP\"/" "$STATE_FILE"
     perl -i -pe "s/\"name\": null/\"name\": \"$PROJECT_NAME\"/" "$STATE_FILE"
     perl -i -pe "s/\"initialized\": null/\"initialized\": \"$TIMESTAMP\"/" "$STATE_FILE"
@@ -291,11 +534,45 @@ This directory contains all framework configuration and memory for your project.
 - **boilerplate/**: Optional boilerplate configuration
 - **scripts/**: Automation scripts' "README.md"
 
+# Show summary of skipped files
+if [ $SKIPPED_COUNT -gt 0 ]; then
+    echo -e "${YELLOW}  Skipped${NC} $SKIPPED_COUNT existing files (framework already initialized)"
+fi
+
 echo ""
-echo -e "${BLUE}Initialization complete!${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${BLUE}Initialization Complete!${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo "Next steps:"
-echo "1. Run: /vibecode:constitution (establish project principles)"
-echo "2. Run: /vibecode:specify \"your first feature\""
-echo "3. Run: /vibecode:resume (anytime you start a new session)"
+
+# Provide context-specific next steps based on integration mode
+case "$INTEGRATION_MODE" in
+    "greenfield")
+        echo "Next steps (Greenfield Project):"
+        echo "  1. Run: /vibecode:constitution (establish project principles)"
+        echo "  2. Run: /vibecode:specify \"your first feature\""
+        echo "  3. Run: /vibecode:resume (anytime you start a new session)"
+        ;;
+
+    "first-time-existing")
+        echo "Next steps (Existing Project Integration):"
+        echo "  1. Run: /vibecode:onboard (audit your codebase)"
+        echo "  2. Run: /vibecode:constitution (evolution principles)"
+        echo "  3. Run: /vibecode:specify \"your next feature\""
+        echo ""
+        echo "See: docs/EXISTING_PROJECTS.md for detailed integration guide"
+        ;;
+
+    "re-onboard")
+        echo "Re-onboarding mode active:"
+        echo "  1. Run: /vibecode:onboard (refresh codebase knowledge)"
+        echo "  2. Run: /vibecode:resume (continue work)"
+        ;;
+
+    "update-only")
+        echo "Timestamp updated! Ready to resume work:"
+        echo "  Run: /vibecode:resume (pick up where you left off)"
+        ;;
+esac
+
 echo ""

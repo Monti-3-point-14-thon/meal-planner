@@ -33,65 +33,20 @@ export default async function DashboardPage() {
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Welcome back, {session.user.name}!</h1>
-            <p className="text-base-content/70 mt-1">Your personalized meal planning dashboard</p>
-          </div>
-
-          {/* User profile + sign out */}
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
-                {session.user.image ? (
-                  <img src={session.user.image} alt={session.user.name || "User"} />
-                ) : (
-                  <div className="bg-primary text-primary-content flex items-center justify-center w-full h-full">
-                    {session.user.name?.charAt(0) || "U"}
-                  </div>
-                )}
-              </div>
-            </label>
-            <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-              <li className="menu-title">
-                <span>{session.user.email}</span>
-              </li>
-              <li>
-                <Link href="/settings/profile">Profile Settings</Link>
-              </li>
-              <li>
-                <form action="/api/auth/signout" method="POST">
-                  <button type="submit" className="w-full text-left">Sign Out</button>
-                </form>
-              </li>
-            </ul>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Welcome back, {session.user.name}!</h1>
+          <p className="text-base-content/70 mt-1">Your personalized meal planning dashboard</p>
         </div>
 
-        {/* Main content - Placeholder sections */}
+        {/* Main content */}
         <div className="grid gap-6">
-          {/* Quick actions */}
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">Quick Actions</h2>
-              <div className="flex gap-4 mt-4">
-                <Link href="/generate" className="btn btn-primary">
-                  Generate Meal Plan
-                </Link>
-                <Link href="/history" className="btn btn-outline">
-                  View All Plans
-                </Link>
-              </div>
-            </div>
-          </div>
-
           {/* Recent plans */}
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="card-title">Recent Meal Plans</h2>
                 {recentPlans.length > 0 && (
-                  <Link href="/history" className="btn btn-sm btn-ghost">
+                  <Link href="/meal-plans" className="btn btn-sm btn-ghost">
                     View All
                   </Link>
                 )}

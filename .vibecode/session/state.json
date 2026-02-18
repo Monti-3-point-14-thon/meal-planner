@@ -2,14 +2,14 @@
   "project": {
     "name": "meal-planner_v0",
     "initialized": "2026-02-11T08:20:42Z",
-    "last-active": "2026-02-15T10:00:00Z",
+    "last-active": "2026-02-18T22:00:00Z",
     "version": "0.1.0"
   },
   "current": {
-    "feature": null,
-    "phase": null,
-    "branch": "main",
-    "last-command": "implement"
+    "feature": "004-navigation-sidebar",
+    "phase": "plan",
+    "branch": "004-navigation-sidebar",
+    "last-command": "plan"
   },
   "history": {
     "features-completed": [
@@ -35,8 +35,8 @@
         "status": "Complete - MongoDB persistence, NextAuth Google OAuth, multi-user support, meal plan history, cross-device sync"
       }
     ],
-    "total-features": 3,
-    "last-milestone": "Feature 003 complete: Database & authentication infrastructure with MongoDB, NextAuth, multi-user support, and persistent storage"
+    "total-features": 4,
+    "last-milestone": "Feature 004 specification: Navigation sidebar with collapsible UX, mobile responsive, and route rename /history → /meal-plans"
   },
   "flags": {
     "has-constitution": true,
