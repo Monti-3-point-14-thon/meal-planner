@@ -1,8 +1,21 @@
-# Decision: Icon Strategy for Navigation Sidebar
+# Decision: Icon Strategy for Navigation Sidebar [SUPERSEDED]
 
 **Date**: 2026-02-18
 **Feature**: 004-navigation-sidebar
+**Status**: ⚠️ SUPERSEDED by 2026-02-19-navigation-svg-icons-cleanup.md
 **Context**: Need icons for navigation links, CTA button, and settings section. App is in MVP phase with 2 users, focusing on speed to validate.
+
+---
+
+## Supersession Notice
+
+**Superseded by**: 2026-02-19-navigation-svg-icons-cleanup.md
+**Date superseded**: 2026-02-19
+**Reason**: User feedback requested professional appearance and consistent rendering. Migration path (defined below) was executed during Feature 004 refinement phase.
+
+**Current implementation**: All navigation icons now use inline SVG (Heroicons style) instead of Unicode emoji.
+
+---
 
 ---
 

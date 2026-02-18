@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/history',
+        destination: '/meal-plans',
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       // NextJS <Image> component needs to whitelist domains for src={}

@@ -2,7 +2,18 @@
 
 **Date**: 2026-02-18
 **Feature**: 004-navigation-sidebar
+**Status**: ✅ ACTIVE (implementation location updated Feb 19)
 **Context**: Need to persist sidebar collapse preference (expanded vs collapsed) across page refreshes and browser sessions. App has 2 users in MVP phase.
+
+---
+
+## Implementation Update (2026-02-19)
+
+**Change**: State location moved from `Sidebar.tsx` to `LayoutWrapper.tsx` (parent component)
+**Reason**: Enable main content margin to adjust dynamically with sidebar collapse (see 2026-02-19-sidebar-content-margin-sync.md)
+**Impact**: Core decision (localStorage + useState) unchanged - only the component managing the state changed
+
+---
 
 ---
 
