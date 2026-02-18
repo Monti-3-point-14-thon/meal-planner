@@ -38,9 +38,301 @@ Check: .vibecode/memory/core/constitution.md
 - Options: Review, Update, New Version
 
 **If doesn't exist**:
-- Proceed to Step 2
+- Proceed to Step 1b
 
-### Step 2: Activate PM Skills
+### Step 1b: Check Project Mode
+
+```bash
+Read: .vibecode/session/state.json
+```
+
+**If `flags.existing-project === true`**:
+- Proceed to Step 1c (Existing Project Flow)
+
+**Else** (greenfield project):
+- Proceed to Step 2 (Standard Flow)
+
+### Step 1c: Existing Project Constitution Flow
+
+**This flow is for projects that were integrated into vibecoding (not greenfield).**
+
+#### Pre-load Memory
+
+```bash
+Read: .vibecode/memory/core/tech-stack-rationale.md
+Read: .vibecode/memory/core/architecture-decisions.md
+Read: .vibecode/memory/decisions/active/[date]-onboarding-snapshot.md
+```
+
+#### Present Context
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Existing Project Constitution
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From onboarding:
+• Tech Stack: [summarize from tech-stack-rationale.md]
+• Architecture: [summarize from architecture-decisions.md]
+• Components: [count from component registry]
+• Constraints: [user-provided constraints]
+
+This constitution will focus on:
+✓ Standards for NEW features
+✓ When to match vs diverge from existing patterns
+✓ Evolution strategy for the codebase
+```
+
+#### Existing Project Questions
+
+**Question 1: Evolution Scope**
+
+```
+How should we handle existing code?
+
+1) Preserve & Extend (Recommended)
+   → Keep existing patterns as-is
+   → New features match current style
+   → Only change when absolutely necessary
+
+2) Gradual Modernization
+   → New features can use improved patterns
+   → Opportunistic refactoring when touching code
+   → Document deviations and rationale
+
+3) Active Improvement
+   → Refactor existing code when beneficial
+   → Establish new standards, migrate gradually
+   → Higher change tolerance
+
+Which approach fits your goals?
+```
+
+**Question 2: Pattern Consistency**
+
+```
+When building new features, how strictly should we match existing patterns?
+
+1) Strictly Match
+   → Always follow existing conventions
+   → Consistency > improvement
+   → Minimize cognitive load for codebase
+
+2) Balanced (Recommended)
+   → Match by default
+   → Diverge when significant benefit
+   → Document and explain deviations
+
+3) Flexible
+   → Treat existing patterns as reference
+   → Choose best approach per feature
+   → Build component bridge layer if needed
+
+Choice:
+```
+
+**Question 3: Tech Stack Evolution**
+
+```
+Current stack: [from tech-stack-rationale.md]
+
+Can new features use different technologies?
+
+1) Existing Stack Only
+   → No new frameworks or major libraries
+   → Stay within current tech boundaries
+   → Maximize consistency
+
+2) Hybrid Allowed (Recommended)
+   → New tech for genuinely better solutions
+   → Require strong justification
+   → Evaluate migration cost
+
+3) Flexible Evolution
+   → Open to better tools
+   → Willing to maintain multiple approaches
+   → Accept complexity for capabilities
+
+Choice:
+```
+
+**Question 4: Quality Bar**
+
+```
+How should quality standards compare?
+
+1) Match Existing
+   → Same testing, docs, polish level
+   → Don't raise or lower bar
+   → Consistency across codebase
+
+2) Higher for New (Recommended)
+   → New code meets elevated standards
+   → Gradually improves overall quality
+   → Sets precedent for future work
+
+3) Uniform Quality Push
+   → Establish high bar, apply to all
+   → Refactor existing to meet standards
+   → Cohesive quality throughout
+
+Choice:
+```
+
+**Question 5: Refactoring Trigger**
+
+```
+When should we refactor existing code?
+
+1) Minimal
+   → Only when blocking new features
+   → Never refactor for "cleanliness"
+   → Stability over improvement
+
+2) Opportunistic (Recommended)
+   → Refactor code we're touching anyway
+   → Fix root causes, not symptoms
+   → Balance improvement with velocity
+
+3) Proactive
+   → Address technical debt regularly
+   → Refactor before it blocks work
+   → Invest in long-term maintainability
+
+Choice:
+```
+
+#### Create Existing Project Constitution
+
+**Based on answers, create constitution with these sections**:
+
+```markdown
+# Project Constitution - Evolutionary Development
+
+**Version**: 1.0.0
+**Created**: [DATE]
+**Mode**: Existing Project Evolution
+**Last Updated**: [DATE]
+
+## Core Principles
+
+### I. Baseline Respect
+
+This project had [X years/months] of development before vibecoding integration.
+Existing code represents valid decisions made with available context at the time.
+
+**Our approach**: [User's choice from Question 1]
+
+**Pattern consistency**: [User's choice from Question 2]
+
+### II. Evolution Strategy
+
+**Tech Stack Policy**: [User's choice from Question 3]
+
+**Quality Standards**: [User's choice from Question 4]
+
+**Current Stack**:
+- [Summarize from tech-stack-rationale.md]
+
+**Constraints**:
+- [List from onboarding snapshot]
+
+### III. Change Protocol
+
+When diverging from existing patterns:
+1. Document the reason (user benefit, technical debt fix, etc.)
+2. Consider blast radius (how much existing code affected)
+3. [If Gradual Modernization]: Create bridge pattern if needed
+4. Log decision to memory layer
+
+**Refactoring Policy**: [User's choice from Question 5]
+
+## Work Classification (LNO Framework)
+
+### Leverage Work
+[Same as greenfield - ask about their quality bar]
+
+### Neutral Work
+[Same as greenfield]
+
+### Overhead Work
+[Same as greenfield]
+
+## Technical Standards for New Features
+
+**Code Quality**: [Based on Question 4 choice]
+**Testing**: [Match existing or higher - specify]
+**Documentation**: [Match existing or higher - specify]
+**Performance**: [Any specific requirements]
+
+## Prototype vs Robust Decision Framework
+
+[Same as greenfield - when to ship fast vs build for scale]
+
+## Architectural Consistency
+
+**When to Match Existing**:
+- Feature fits current architecture naturally
+- Pattern is proven and working well
+- Consistency benefits team/maintenance
+
+**When to Diverge**:
+- Existing pattern doesn't fit use case
+- Technical debt would be propagated
+- Significantly better approach available
+- [Additional criteria from user]
+
+**Decision Template**: Use technical implications flow (ask-context-explain)
+
+## Review & Evolution
+
+**Constitution Review**: Every [3/6/12 months]
+**Re-onboard Codebase**: If major changes occur
+**Pattern Library Updates**: As new patterns emerge
+
+---
+
+**This constitution guides evolution while respecting the existing codebase.**
+```
+
+#### Save and Update State
+
+```bash
+Write: .vibecode/memory/core/constitution.md
+
+Update: .vibecode/session/state.json
+- Set flags.has-constitution = true
+- Set current.last-command = "constitution"
+- Set project.last-active = [current timestamp]
+```
+
+#### Confirm Completion
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Constitution Created! (Existing Project Mode)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your project now has evolutionary principles:
+✓ Evolution scope: [choice]
+✓ Pattern consistency: [choice]
+✓ Tech stack policy: [choice]
+✓ Quality standards: [choice]
+✓ Refactoring policy: [choice]
+
+Saved: .vibecode/memory/core/constitution.md
+
+Next Steps:
+1. Run: /vibecode:specify "your next feature"
+2. Claude will reference existing patterns and constitution
+
+The framework will match your existing code by default,
+diverging only when beneficial and documented.
+```
+
+**After Step 1c completes, the command ends (don't proceed to Step 2).**
+
+### Step 2: Activate PM Skills (Greenfield Flow)
 
 **Primary Skills**:
 - `strategic-build` (LNO Framework - Leverage/Neutral/Overhead)

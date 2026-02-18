@@ -53,32 +53,148 @@ Count existing specs, increment by 1
 Example: If 001-auth exists, new feature is 002-meal-plans
 ```
 
-### Step 2: Activate PM Skills
+### Step 2: Load Context
 
-**Primary Skills**:
-- `zero-to-launch` (MVP scoping, Figma simplicity, Airbnb complete experience)
-- `jtbd-building` (Jobs-to-be-Done framework)
-- `strategic-build` (LNO - is this Leverage, Neutral, or Overhead work?)
+```bash
+Read: .vibecode/session/state.json
+Extract: project context, last active feature
+```
 
-**Read Configuration**:
+### Step 2a: Load PM Skills Index & Identify Relevant Skills (Progressive Disclosure)
+
+**1. Read skills index (lightweight metadata - ~8KB for all skills):**
+```bash
+Read: .vibecode/skills/skills-index.json
+Load: Complete skill metadata for all available skills
+```
+
+**2. Read user configuration:**
 ```bash
 Read: .vibecode/pm-skills-config.json
-Check: scope-forcing setting (aggressive/balanced/consultative)
+Extract:
+- scope-forcing: [aggressive | balanced | consultative]
+- Enabled skills with weights
 ```
 
-### Step 3: Apply Figma's Simplicity Test
+**3. Detect feature context from user description:**
+Scan for trigger keywords from skills-index.json:
+- **AI keywords**: ai, llm, gpt, chatbot, ml, model, prompt, embedding, etc.
+- **MVP keywords**: mvp, prototype, launch, idea, startup
+- **Design keywords**: ui, design, component, visual, frontend
 
-**Ask aggressively** (if scope-forcing = aggressive):
-
+**4. Identify relevant skills for specify phase:**
+```bash
+FOR EACH skill in skills-index.json:
+  IF skill.enabled in config = true
+  AND skill.weight >= medium
+  AND ("specify" in skill.vibecoding_sections)
+  AND (skill is base_skill OR feature_keywords match skill.triggers.keywords):
+    → Add to loaded_skills_list
 ```
+
+**Base skills (always considered if enabled):**
+- `zero-to-launch` - MVP scoping
+- `strategic-build` - LNO classification
+
+**Conditional skills (load if keywords match):**
+- `ai-product-patterns` - If AI keywords detected
+
+**5. Output loaded skills list:**
+```
+Skills identified for application:
+✓ zero-to-launch (critical, weight: 10)
+✓ strategic-build (critical, weight: 10)
+✓ ai-product-patterns (high, weight: 7) [AI keywords detected]
+
+Note: Skill CONTENT not loaded yet - only metadata.
+Full skill content loaded on-demand in Step 4 (progressive disclosure).
+Token savings: ~60KB → ~8KB at this stage
+```
+
+**Weight interpretation:**
+- critical (10): MUST load and apply
+- high (7-9): Load and apply frequently
+- medium (4-6): Load when relevant
+- low (1-3): Skip (don't load)
+
+### Step 2b: Detect Feature Type & Suggest Skills
+
+**Run feature type detection on user's description:**
+
+Scan description for keywords:
+- **AI Feature**: ai, llm, gpt, chatbot, ml, model, agent, neural, completion, prompt
+- **MVP/Prototype**: mvp, prototype, test, validate, experiment, poc, pilot
+- **Analytics**: dashboard, analytics, metrics, reporting, insights, charts
+- **Auth**: auth, login, security, oauth, permissions, roles
+- **Integration**: integrate, api, third-party, webhook, payment, stripe
+- **Growth**: viral, referral, sharing, invite, social, loop
+
+**IF AI keywords detected AND ai-product-patterns disabled OR weight < medium:**
+```
+Display skill suggestion:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PM Skills Configuration Check
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Feature Type Detected: AI Feature
+Keywords matched: [list keywords]
+Description: "[user input]"
+
+Recommended Skills:
+✓ zero-to-launch (enabled, weight: critical)
+✓ strategic-build (enabled, weight: critical)
+✗ ai-product-patterns (weight: low / disabled)
+  → Benefit: AI-specific guidance (model selection, evals, cost modeling)
+  → Activates in /vibecode:plan for detailed AI planning
+
+Would you like to:
+A) Enable ai-product-patterns for this feature
+B) Proceed with current configuration
+C) Learn more about AI product patterns
+
+Choice: _
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IF user chooses A:
+  Update .vibecode/pm-skills-config.json
+  Set ai-product-patterns: enabled=true, weight=high
+  Reload skills for this session
+
+IF user chooses B:
+  Continue with current config
+  Log: User opted to skip AI skills suggestion
+
+IF user chooses C:
+  Display brief overview from ai-product-patterns.md
+  Then retry suggestion
+```
+
+**IF no strong feature type match:**
+- No suggestion displayed
+- Use default config (zero-to-launch + strategic-build if enabled)
+
+### Step 3: Apply Scope Forcing (Adaptive Based on Config)
+
+Read scope-forcing setting from config loaded in Step 2a.
+
+**IF scope-forcing = "aggressive":**
+```
+Behavior: Challenge scope proactively
+
 What's the ONE core job this feature must do?
 
 Your description: "[user's description]"
 
-Let's apply Figma's simplicity test:
-- If you could only ship ONE capability, what would it be?
-- What's the absolute minimum that would be valuable?
-- Can we ship a working version in 1 week?
+Let's apply scope forcing:
+- "What's the ONE capability you can't ship without?"
+- "Can you explain this in one sentence?"
+- "If this took more than 1 week, what would you cut?"
+
+[IF zero-to-launch loaded AND weight >= high]:
+  Apply Figma simplicity test:
+  - "If you could only ship ONE screen, which would it be?"
+  - "Can you explain this in one Figma frame?"
 
 [If description seems complex]:
 ⚠️ This feels like it might take >1 week to build. Let's simplify.
@@ -89,30 +205,120 @@ Everything else: Nice-to-have (can add later)
 Does this core job match your intent?
 ```
 
-### Step 4: Map Complete User Experience (Airbnb Approach)
-
-Once core job is clear, map the FULL user journey:
-
+**ELSE IF scope-forcing = "balanced":**
 ```
-Let's map the complete experience for: "[core job]"
+Behavior: Suggest scope reduction (gentler)
 
-User Journey:
-1. Entry point: How does user start?
-2. Main flow: Step-by-step actions
-3. Success state: What does user achieve?
-4. Edge cases: What can go wrong?
+Your description: "[user's description]"
 
-All States to Design:
-- Loading states
-- Error states
-- Empty states
-- Success states
+Let's identify the core user need:
+- "What's the main job users are trying to accomplish?"
+- "What's the simplest version that delivers value?"
+- "How might we scope this to ship in < 2 weeks?"
 
-Questions:
-- What happens before this feature?
-- What happens after success?
-- How does this fit into larger product flow?
+[Gentle suggestions, not challenges]
+
+Proposed focus: "[core job]"
+Additional features: "[phase 2 items]"
+
+Does this feel right?
 ```
+
+**ELSE IF scope-forcing = "consultative":**
+```
+Behavior: Document as described, trust user judgment
+
+Your description: "[user's description]"
+
+I'll build what you've described.
+
+[Only intervene if obviously >4 weeks]
+IF estimated >4 weeks:
+  "This sounds substantial. Would you like suggestions on how to break this into phases?"
+```
+
+### Step 4: Apply Loaded PM Skills (Progressive Disclosure - Read Only Needed Sections)
+
+**FOR EACH skill in loaded_skills_list from Step 2a:**
+
+**Progressive disclosure optimization:**
+- Get skill file path from skills-index.json
+- Read ONLY "## Vibecoding Integration > ### In /vibecode:specify" section
+- Skip: Core Frameworks, Examples, Quick Reference (not needed during execution)
+- Token savings: ~10KB → ~2KB per skill (80% reduction)
+
+**Execution pattern:**
+```bash
+FOR EACH loaded_skill IN [skills loaded in Step 2a]:
+  # Get metadata from index (already loaded)
+  skill_data = skills-index.json[loaded_skill]
+  file_path = skill_data.file
+  section_marker = skill_data.vibecoding_sections.specify.marker
+
+  # Read ONLY the relevant section (progressive disclosure)
+  Read: {file_path}
+  Section: Find "## Vibecoding Integration", then find "{section_marker}"
+  Extract: Content between "{section_marker}" and next "###" or "##"
+
+  # Execute frameworks from that section only
+  Apply: Frameworks listed in extracted content
+```
+
+**Typical execution order:**
+1. zero-to-launch (if loaded) → MVP scoping, Figma simplicity test, Airbnb experience mapping
+2. strategic-build (if loaded) → LNO classification
+3. ai-product-patterns (if loaded) → Initial AI scoping questions
+4. [Any other builder skills loaded]
+
+**Example with progressive disclosure:**
+
+IF zero-to-launch loaded (weight >= medium):
+- File: `.vibecode/skills/builder/zero-to-launch.md` (from index)
+- Read ONLY: Section starting at "### In /vibecode:specify"
+- Stop at: Next "###" or "##" marker
+- Apply: Figma Simplicity Test, Airbnb Experience Mapping, OpenAI First Principles
+- Token cost: ~2KB (vs ~10KB if reading full file)
+
+IF strategic-build loaded:
+- File: `.vibecode/skills/builder/strategic-build.md` (from index)
+- Read ONLY: "### In /vibecode:specify" section
+- Apply: LNO Classification framework
+- Token cost: ~1.5KB (vs ~8KB full file)
+
+IF ai-product-patterns loaded (AI keywords detected):
+- File: `.vibecode/skills/builder/ai-product-patterns.md` (from index)
+- Read ONLY: "### In /vibecode:specify" section
+- Apply: Initial AI scoping questions
+- Token cost: ~2KB (vs ~12KB full file)
+
+**Notes:**
+- Each skill file's "Vibecoding Integration > In /vibecode:specify" section is authoritative
+- Progressive disclosure: Load metadata first (Step 2a), content on-demand (Step 4)
+- No hardcoded skill logic in commands
+- Adding new skills requires NO command changes - just create skill file + enable in config
+- Expected total token savings: 60-70% for skill content
+
+### Step 4b: User Response Gate
+
+**If skills raised clarifying questions that require user decisions:**
+- List the key questions clearly
+- STOP HERE and wait for user responses
+- After user responds, integrate their answers into the specification
+- Then proceed to Step 5
+
+**Examples of questions requiring user input**:
+- Scope decisions: "What's the ONE core job this must do?"
+- Priority decisions: "If you only had 1 week, what would you build?"
+- AI capability decisions: "What's the AI capability? Summarization, generation, classification?"
+- Technical constraints: "Real-time or async acceptable?"
+
+**If no critical questions** (or questions were rhetorical/for reflection):
+- Proceed directly to Step 5
+- Questions can be answered asynchronously during review
+
+**Decision criteria**:
+- Critical questions = answers affect spec structure, scope, or approach
+- Rhetorical questions = user reflection prompts, don't need immediate answers
 
 ### Step 5: Create Feature Directory and Branch
 
@@ -241,6 +447,16 @@ Update: .vibecode/session/state.json
 - Set current.last-command = "specify"
 - Set project.last-active = [current timestamp]
 - Increment history.total-features
+- Add to flags: skills-applied = [EXACT list of ALL skills loaded in Step 2a]
+
+  CRITICAL: Include EVERY skill that was loaded (weight >= medium):
+  - zero-to-launch (if loaded)
+  - strategic-build (if loaded)
+  - ai-product-patterns (if loaded - check if AI keywords detected)
+  - Any other builder skills that were loaded
+
+  Example: ["zero-to-launch", "strategic-build", "ai-product-patterns"]
+  Or: ["zero-to-launch", "strategic-build"] (if no AI keywords)
 ```
 
 Update active feature summary:
@@ -260,6 +476,12 @@ Write: .vibecode/session/active-feature.md
 - In Progress: Spec review and refinement
 - Next: Technical planning (/vibecode:plan)
 
+## PM Skills Applied
+[List skills that were loaded and used during specification]
+- zero-to-launch: [If applied - what frameworks: Figma test, Airbnb mapping, etc.]
+- strategic-build: [If applied - LNO classification result]
+- ai-product-patterns: [If applied - AI context noted]
+
 ## Core Spec Summary
 [1-2 paragraph summary of what this feature does and why]
 ```
@@ -269,7 +491,7 @@ Write: .vibecode/session/active-feature.md
 After spec is created:
 
 ```
-Feature Specification Created!
+✅ Feature Specification Created!
 
 Spec: .vibecode/specs/[number]-[feature-name]/spec.md
 
@@ -279,6 +501,14 @@ Spec Summary:
 - Classification: [Leverage/Neutral/Overhead]
 - Estimated complexity: [Simple/Medium/Complex]
 
+PM Skills Applied:
+[List which skills were loaded and applied]
+- ✓ zero-to-launch: [Applied Figma simplicity test, Airbnb experience mapping]
+- ✓ strategic-build: [Classified as LEVERAGE/NEUTRAL/OVERHEAD]
+- ✓ ai-product-patterns: [If AI feature - noted initial context]
+
+Scope Forcing Mode: [aggressive | balanced | consultative]
+
 Before moving to technical planning, let's review the spec for completeness:
 - Are there underspecified areas that need clarification?
 - Are acceptance scenarios clear for each user story?
@@ -286,7 +516,10 @@ Before moving to technical planning, let's review the spec for completeness:
 - Do you and Claude share the same mental model of the feature?
 
 If the spec looks good:
-Run: /vibecode:plan "[tech stack preferences]"
+Run: /vibecode:plan
+
+[If AI feature detected]:
+Note: /vibecode:plan will apply detailed AI-specific guidance (model selection, evals, cost modeling)
 ```
 
 ## Example: Meal Plan Generator

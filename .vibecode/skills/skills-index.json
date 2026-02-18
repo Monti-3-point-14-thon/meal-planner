@@ -1,0 +1,707 @@
+{
+  "version": "0.2.0",
+  "last_updated": "2026-02-17",
+  "description": "Lightweight metadata index for PM skills - enables progressive disclosure (load metadata first, skill content on-demand)",
+  "index": {
+    "builder": {
+      "zero-to-launch": {
+        "file": ".vibecode/skills/builder/zero-to-launch.md",
+        "weight_default": "critical",
+        "description": "Idea → Prototype playbook (OpenAI, Figma, Airbnb frameworks)",
+        "source": "Dylan Field (Figma), Brian Chesky (Airbnb), Greg Brockman (OpenAI)",
+        "triggers": {
+          "keywords": ["mvp", "prototype", "launch", "idea", "startup", "user", "experience"],
+          "phases": ["specify", "plan", "tasks", "implement", "constitution"]
+        },
+        "frameworks": [
+          "Figma Simplicity Test",
+          "Airbnb Experience Mapping",
+          "OpenAI First Principles"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "strategic-build": {
+        "file": ".vibecode/skills/builder/strategic-build.md",
+        "weight_default": "critical",
+        "description": "LNO framework - Leverage vs Neutral vs Overhead work",
+        "source": "Shreyas Doshi (Stripe)",
+        "triggers": {
+          "keywords": ["priority", "leverage", "overhead", "strategic", "classification"],
+          "phases": ["specify", "plan", "tasks"]
+        },
+        "frameworks": [
+          "LNO Classification",
+          "Work Type Analysis"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          }
+        }
+      },
+      "ship-decisions": {
+        "file": ".vibecode/skills/builder/ship-decisions.md",
+        "weight_default": "critical",
+        "description": "When to ship vs iterate - reversible decisions, shipping scorecard",
+        "source": "Shreyas Doshi, Jeff Bezos (Two-Way Doors), Marty Cagan, Tobi Lutke",
+        "triggers": {
+          "keywords": ["ship", "launch", "deploy", "ready", "done", "polish", "iterate", "refactor", "technical debt"],
+          "phases": ["plan", "tasks", "implement"]
+        },
+        "frameworks": [
+          "Reversible vs Irreversible Decisions (Two-Way Doors)",
+          "Shipping Scorecard (5-Check System)",
+          "Technical Debt vs Shipping Speed"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "ai-product-patterns": {
+        "file": ".vibecode/skills/builder/ai-product-patterns.md",
+        "weight_default": "high",
+        "description": "AI-first product development patterns",
+        "source": "Kevin Weil (OpenAI CPO)",
+        "triggers": {
+          "keywords": ["ai", "llm", "model", "gpt", "claude", "openai", "anthropic", "ml", "machine learning", "prompt", "embedding", "vector", "rag"],
+          "phases": ["specify", "plan", "implement"]
+        },
+        "frameworks": [
+          "Model Selection",
+          "Evals as Specifications",
+          "Latency Requirements",
+          "Fallback Strategy",
+          "Cost Modeling",
+          "Quality Measurement",
+          "Prompt Strategy"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "quality-speed": {
+        "file": ".vibecode/skills/builder/quality-speed.md",
+        "weight_default": "critical",
+        "description": "Context-driven quality vs speed framework",
+        "source": "Dylan Field (Figma), Shreyas Doshi (Stripe)",
+        "triggers": {
+          "keywords": ["decision", "trade-off", "architecture", "quality", "speed", "prototype", "robust"],
+          "phases": ["plan", "tasks", "implement"]
+        },
+        "frameworks": [
+          "Quality-Speed Spectrum",
+          "Simplicity Forcing",
+          "Context Questions"
+        ],
+        "vibecoding_sections": {
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "design-first-dev": {
+        "file": ".vibecode/skills/builder/design-first-dev.md",
+        "weight_default": "high",
+        "description": "Craft quality standards and design system adherence",
+        "source": "Brian Chesky (Airbnb), Design Systems Movement",
+        "triggers": {
+          "keywords": ["ui", "design", "component", "visual", "frontend", "styling", "ux", "user interface"],
+          "phases": ["plan", "tasks", "implement"]
+        },
+        "frameworks": [
+          "Design System Adherence",
+          "Quality Bar Definition",
+          "Component Reuse Strategy"
+        ],
+        "vibecoding_sections": {
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "jtbd-building": {
+        "file": ".vibecode/skills/builder/jtbd-building.md",
+        "weight_default": "low",
+        "description": "Jobs-to-be-Done framework - understanding customer jobs beyond feature requests",
+        "source": "Bob Moesta, Clayton Christensen",
+        "triggers": {
+          "keywords": ["job", "need", "customer", "user", "problem", "pain", "struggle", "hire", "fire", "switch"],
+          "phases": ["specify", "plan"]
+        },
+        "frameworks": [
+          "Jobs Theory (When/Want/So I can)",
+          "Forces Diagram (Push/Pull/Anxiety/Habit)"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          }
+        }
+      },
+      "continuous-discovery": {
+        "file": ".vibecode/skills/builder/continuous-discovery.md",
+        "weight_default": "low",
+        "description": "Weekly customer contact, opportunity solution trees, assumption testing",
+        "source": "Teresa Torres (Continuous Discovery Habits)",
+        "triggers": {
+          "keywords": ["discovery", "customer", "interview", "research", "validate", "assumption", "test", "user", "feedback", "opportunity"],
+          "phases": ["specify", "plan"]
+        },
+        "frameworks": [
+          "Weekly Customer Contact",
+          "Opportunity Solution Trees",
+          "Assumption Testing"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          }
+        }
+      },
+      "growth-embedded": {
+        "file": ".vibecode/skills/builder/growth-embedded.md",
+        "weight_default": "low",
+        "description": "Growth loops, viral mechanics, referral systems built into products from day 1",
+        "source": "Gustaf Alstromer (YC), Casey Winters, Elena Verna",
+        "triggers": {
+          "keywords": ["growth", "viral", "referral", "share", "retention", "activation", "onboarding", "loop", "network", "k-factor"],
+          "phases": ["specify", "plan", "implement"]
+        },
+        "frameworks": [
+          "YC Growth Playbook (Retention First)",
+          "Growth Loops",
+          "Referral Mechanics"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "exp-driven-dev": {
+        "file": ".vibecode/skills/builder/exp-driven-dev.md",
+        "weight_default": "low",
+        "description": "A/B testing, feature flags, experimentation frameworks for data-driven decisions",
+        "source": "Ronny Kohavi (Microsoft/Netflix), Airbnb experimentation culture",
+        "triggers": {
+          "keywords": ["experiment", "test", "A/B", "flag", "metric", "hypothesis", "data", "measurement", "rollout", "variant"],
+          "phases": ["plan", "implement"]
+        },
+        "frameworks": [
+          "HITS Experiment Design",
+          "Metric Selection (Primary + Guardrails)",
+          "Feature Flag Architecture"
+        ],
+        "vibecoding_sections": {
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "ai-startup-building": {
+        "file": ".vibecode/skills/builder/ai-startup-building.md",
+        "weight_default": "low",
+        "description": "AI-native startup patterns - fast shipping, prompt engineering, cost optimization",
+        "source": "Dan Shipper (Every), Brandon Chu (Shopify), 2025 AI best practices",
+        "triggers": {
+          "keywords": ["ai", "llm", "prompt", "model", "gpt", "claude", "anthropic", "openai", "ml", "embedding", "vector", "rag", "agent"],
+          "phases": ["specify", "plan", "implement"]
+        },
+        "frameworks": [
+          "AI-Native Startup Playbook",
+          "2025 Prompt Engineering Best Practices",
+          "Cost Optimization (Caching, Routing, Batching)",
+          "AI-Native UX Patterns"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      }
+    },
+    "strategist": {
+      "decision-frameworks": {
+        "file": ".vibecode/skills/strategist/decision-frameworks.md",
+        "weight_default": "critical",
+        "description": "Structured decision logging templates",
+        "source": "Architecture Decision Records (ADR) methodology",
+        "triggers": {
+          "keywords": ["decision", "architecture", "technology", "trade-off", "options"],
+          "phases": ["plan", "tasks", "implement"]
+        },
+        "frameworks": [
+          "Structured Decision Template",
+          "Decision Type Classification",
+          "Trade-off Analysis"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      },
+      "prioritization-craft": {
+        "file": ".vibecode/skills/strategist/prioritization-craft.md",
+        "weight_default": "high",
+        "description": "Feature prioritization using RICE, Value vs Effort, stack ranking",
+        "source": "Intercom (RICE), Shreyas Doshi",
+        "triggers": {
+          "keywords": ["prioritize", "backlog", "roadmap", "priority", "ranking", "order", "sequence", "tradeoff"],
+          "phases": ["specify", "plan", "tasks"]
+        },
+        "frameworks": [
+          "RICE Scoring System",
+          "Value vs Effort Matrix",
+          "Prioritization Template"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          },
+          "tasks": {
+            "marker": "### In /vibecode:tasks",
+            "applies": true
+          }
+        }
+      },
+      "strategy-frameworks": {
+        "file": ".vibecode/skills/strategist/strategy-frameworks.md",
+        "weight_default": "low",
+        "description": "Product strategy - where to play and how to win, beachhead market selection",
+        "source": "Playing to Win (Lafley/Martin), Crossing the Chasm (Geoffrey Moore)",
+        "triggers": {
+          "keywords": ["strategy", "market", "competitive", "positioning", "advantage", "segment", "beachhead", "vision", "aspiration"],
+          "phases": ["constitution", "specify"]
+        },
+        "frameworks": [
+          "Playing to Win (5 Strategic Choices)",
+          "Crossing the Chasm (Beachhead Strategy)",
+          "Strategic Positioning Canvas"
+        ],
+        "vibecoding_sections": {
+          "constitution": {
+            "marker": "### In /vibecode:constitution",
+            "applies": true
+          },
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      },
+      "okr-frameworks": {
+        "file": ".vibecode/skills/strategist/okr-frameworks.md",
+        "weight_default": "low",
+        "description": "OKR and goal setting - objectives and key results for quarterly planning",
+        "source": "Christina Wodtke (Radical Focus), Google OKR methodology",
+        "triggers": {
+          "keywords": ["okr", "goal", "objective", "key result", "quarterly", "target", "metric", "measurement", "kpi"],
+          "phases": ["constitution", "specify"]
+        },
+        "frameworks": [
+          "OKR Structure (Objective + Key Results)",
+          "OKR Quality Checks",
+          "OKR Cadence (Solo Founder Edition)"
+        ],
+        "vibecoding_sections": {
+          "constitution": {
+            "marker": "### In /vibecode:constitution",
+            "applies": true
+          },
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      }
+    },
+    "communicator": {
+      "strategic-storytelling": {
+        "file": ".vibecode/skills/communicator/strategic-storytelling.md",
+        "weight_default": "low",
+        "description": "Strategic narrative for product launches and pitches",
+        "source": "Andy Raskin, Nancy Duarte",
+        "triggers": {
+          "keywords": ["story", "narrative", "pitch", "launch", "announcement", "messaging", "framing", "positioning"],
+          "phases": ["specify"]
+        },
+        "frameworks": [
+          "5-Act Strategic Narrative (Old World, Insight, New World, Stakes, Your Role)"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      },
+      "positioning-craft": {
+        "file": ".vibecode/skills/communicator/positioning-craft.md",
+        "weight_default": "low",
+        "description": "Product positioning using April Dunford's framework",
+        "source": "April Dunford (Obviously Awesome)",
+        "triggers": {
+          "keywords": ["positioning", "value prop", "differentiation", "competitive", "alternative", "target customer", "category"],
+          "phases": ["constitution", "specify"]
+        },
+        "frameworks": [
+          "April Dunford's 5-Component Positioning"
+        ],
+        "vibecoding_sections": {
+          "constitution": {
+            "marker": "### In /vibecode:constitution",
+            "applies": true
+          },
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      },
+      "exec-comms": {
+        "file": ".vibecode/skills/communicator/exec-comms.md",
+        "weight_default": "low",
+        "description": "Executive communication using BLUF and SCQA frameworks",
+        "source": "Amazon 6-pager, Stripe memos, SCQA framework",
+        "triggers": {
+          "keywords": ["memo", "document", "update", "decision", "stakeholder", "executive", "board", "investor"],
+          "phases": ["specify", "plan"]
+        },
+        "frameworks": [
+          "BLUF (Bottom Line Up Front)",
+          "SCQA (Situation-Complication-Question-Answer)"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "plan": {
+            "marker": "### In /vibecode:plan",
+            "applies": true
+          }
+        }
+      },
+      "confident-speaking": {
+        "file": ".vibecode/skills/communicator/confident-speaking.md",
+        "weight_default": "low",
+        "description": "Presentation structure using WHAT-SO WHAT-NOW WHAT",
+        "source": "Matt Abrahams (Think Fast, Talk Smart)",
+        "triggers": {
+          "keywords": ["presentation", "pitch", "demo", "talk", "speaking", "meeting", "rehearsal"],
+          "phases": []
+        },
+        "frameworks": [
+          "WHAT → SO WHAT → NOW WHAT"
+        ],
+        "vibecoding_sections": {}
+      }
+    },
+    "navigator": {
+      "influence-craft": {
+        "file": ".vibecode/skills/navigator/influence-craft.md",
+        "weight_default": "low",
+        "description": "Building influence without authority (team context)",
+        "source": "Jeffrey Pfeffer (Power: Why Some People Have It)",
+        "triggers": {
+          "keywords": ["influence", "stakeholder", "buy-in", "coalition", "political", "power", "authority"],
+          "phases": []
+        },
+        "frameworks": [
+          "7 Sources of Power"
+        ],
+        "vibecoding_sections": {}
+      },
+      "stakeholder-craft": {
+        "file": ".vibecode/skills/navigator/stakeholder-craft.md",
+        "weight_default": "low",
+        "description": "Feedback and stakeholder relationships (team context)",
+        "source": "Kim Scott (Radical Candor), SBI Feedback Model",
+        "triggers": {
+          "keywords": ["feedback", "stakeholder", "conversation", "radical candor", "difficult", "relationship"],
+          "phases": []
+        },
+        "frameworks": [
+          "Radical Candor",
+          "SBI Feedback Model"
+        ],
+        "vibecoding_sections": {}
+      },
+      "workplace-navigation": {
+        "file": ".vibecode/skills/navigator/workplace-navigation.md",
+        "weight_default": "low",
+        "description": "Conflict resolution and difficult colleagues (team context)",
+        "source": "Anneka Gupta, workplace dynamics research",
+        "triggers": {
+          "keywords": ["conflict", "difficult", "colleague", "toxic", "relationship", "dynamics", "escalation"],
+          "phases": []
+        },
+        "frameworks": [
+          "Conflict Resolution Pattern"
+        ],
+        "vibecoding_sections": {}
+      }
+    },
+    "leader": {
+      "culture-craft": {
+        "file": ".vibecode/skills/leader/culture-craft.md",
+        "weight_default": "low",
+        "description": "Team culture and excellence standards (team context)",
+        "source": "David Singleton (Stripe), Dharmesh Shah (HubSpot)",
+        "triggers": {
+          "keywords": ["culture", "values", "team", "excellence", "rituals", "standards", "principles"],
+          "phases": []
+        },
+        "frameworks": [
+          "Culture as Competitive Advantage"
+        ],
+        "vibecoding_sections": {}
+      },
+      "career-growth": {
+        "file": ".vibecode/skills/leader/career-growth.md",
+        "weight_default": "low",
+        "description": "PM career advancement (corporate PM context)",
+        "source": "PM career frameworks, Ami Vora",
+        "triggers": {
+          "keywords": ["career", "promotion", "advancement", "level", "growth", "progression"],
+          "phases": []
+        },
+        "frameworks": [
+          "Promotion Gap Analysis"
+        ],
+        "vibecoding_sections": {}
+      },
+      "strategic-pm": {
+        "file": ".vibecode/skills/leader/strategic-pm.md",
+        "weight_default": "low",
+        "description": "Strategic thinking (why over what, outcomes over output)",
+        "source": "Anneka Gupta",
+        "triggers": {
+          "keywords": ["strategic", "tactical", "outcome", "output", "vision", "why", "ladders up"],
+          "phases": ["specify"]
+        },
+        "frameworks": [
+          "Strategic vs Tactical Thinking",
+          "Time Horizons Framework"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      }
+    },
+    "measurement": {
+      "metrics-frameworks": {
+        "file": ".vibecode/skills/measurement/metrics-frameworks.md",
+        "weight_default": "low",
+        "description": "Choose right metrics using North Star and AARRR",
+        "source": "North Star framework, AARRR (Pirate Metrics)",
+        "triggers": {
+          "keywords": ["metrics", "measurement", "kpi", "analytics", "dashboard", "north star", "aarrr", "tracking"],
+          "phases": ["specify", "constitution"]
+        },
+        "frameworks": [
+          "North Star Metric",
+          "AARRR (Pirate Metrics)"
+        ],
+        "vibecoding_sections": {
+          "constitution": {
+            "marker": "### In /vibecode:constitution",
+            "applies": true
+          },
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      },
+      "user-feedback-system": {
+        "file": ".vibecode/skills/measurement/user-feedback-system.md",
+        "weight_default": "low",
+        "description": "Build feedback loops using Superhuman PMF and YC methodology",
+        "source": "Superhuman PMF framework, YC 'talk to users'",
+        "triggers": {
+          "keywords": ["feedback", "survey", "pmf", "product-market fit", "nps", "user research", "interview"],
+          "phases": ["specify", "implement"]
+        },
+        "frameworks": [
+          "Superhuman PMF Survey",
+          "Talk to Users (YC)"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          },
+          "implement": {
+            "marker": "### In /vibecode:implement",
+            "applies": true
+          }
+        }
+      }
+    },
+    "launch": {
+      "launch-execution": {
+        "file": ".vibecode/skills/launch/launch-execution.md",
+        "weight_default": "low",
+        "description": "Launch features with positioning, messaging, and distribution",
+        "source": "April Dunford, Brian Chesky (Airbnb)",
+        "triggers": {
+          "keywords": ["launch", "release", "announcement", "go-to-market", "gtm", "rollout", "marketing"],
+          "phases": ["specify"]
+        },
+        "frameworks": [
+          "Launch Announcement Structure",
+          "Launch Checklist"
+        ],
+        "vibecoding_sections": {
+          "specify": {
+            "marker": "### In /vibecode:specify",
+            "applies": true
+          }
+        }
+      }
+    }
+  },
+  "stats": {
+    "total_skills": 28,
+    "categories": {
+      "builder": 11,
+      "strategist": 4,
+      "communicator": 4,
+      "navigator": 3,
+      "leader": 3,
+      "measurement": 2,
+      "launch": 1
+    },
+    "by_weight": {
+      "critical": 5,
+      "high": 3,
+      "low": 20
+    }
+  }
+}
